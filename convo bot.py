@@ -167,7 +167,7 @@ def generateReport(bot, update):
             return False
             
     report = """Good {}, Sirs.\n
-I am {}, {} of the 84th MIDS, 21st MDEC 1. The {} parade state for {} is as follows:\n
+I am {}, {} of the 84th MIDS/21st MDEC 1. The {} parade state for {} is as follows:\n
 Total strength: {}\n
 Present strength: {}\n
 Reporting sick: {}\n
