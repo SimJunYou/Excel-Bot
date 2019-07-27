@@ -5,6 +5,9 @@ from telegram import ReplyKeyboardMarkup
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
 
+from openpyxl import load_workbook
+from excel import returnSeating, saveFile
+
 import logging, threading
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -12,26 +15,6 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-#################
-
-# EXCEL BITS
-
-from openpyxl import load_workbook
-from excel import returnSeating, saveFile
-
-# read working copy of the workbook
-main_workbook = load_workbook('SeminarDatasheet.xlsx')
-ws = main_workbook['Sheet1']
-logger.info("Opening Excel list...")
-# dump all info values into PERSON dict array for access
-PERSON = []
-row_number = 2
-while ws['A'+str(row_number)].value != None:
-    PERSON.append( {'NRIC': ws['A'+str(row_number)].value,
-                    'GRP1': ws['B'+str(row_number)].value,
-                    'GRP1_REG': ''})
-    row_number += 1
-logger.info("Excel list dumped in memory")
 #################
 
 TYPING_NRIC, RESPONSE = range(2)
@@ -103,7 +86,7 @@ def collectStats(bot, update):
             total += 1
             if each['GRP1_REG'] == 'P':
                 count += 1
-        update.message.reply_text("Total: {}\nPresent: {}".format(total, count))
+        update.message.reply_text("Good day, admin.\nTotal: {}, Present: {}".format(total, count))
         logger.info("Admin initiates stats report.\nTotal: {}, Present: {}".format(total, count))
     else:
         update.message.reply_text("You are not recognised!")
@@ -141,13 +124,12 @@ def main():
             update.message.reply_text("Saving memory to Excel file...")
             saveFile(PERSON, ws, main_workbook)
             bot.send_document(chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
-            update.message.reply_text("Bot is being killed")
-            logger.info("Bot has been killed")
+            update.message.reply_text("Bot is being killed...")
+            logger.info("Bot has been killed.")
             updater.stop()
             updater.is_idle = False
         else:
             update.message.reply_text("You are not recognised!")
-
 
 
     dp.add_handler(conv_handler)
@@ -156,6 +138,22 @@ def main():
 
     # log all errors
     dp.add_error_handler(error)
+
+    ### <EXCEL> ###
+    # read working copy of the workbook
+    main_workbook = load_workbook('SeminarDatasheet.xlsx')
+    ws = main_workbook['Sheet1']
+    logger.info("Opening Excel list...")
+    # dump all info values into PERSON dict array for access
+    PERSON = []
+    row_number = 2
+    while ws['A' + str(row_number)].value != None:
+        PERSON.append({'NRIC': ws['A' + str(row_number)].value,
+                       'GRP1': ws['B' + str(row_number)].value,
+                       'GRP1_REG': ''})
+        row_number += 1
+    logger.info("Excel list dumped in memory")
+    ### </EXCEL> ###
 
     # Start the Bot
     updater.start_polling()
