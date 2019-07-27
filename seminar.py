@@ -165,3 +165,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+    for i in range(0, 399):
+        row_number = str(i + 2)
+        ws['C' + str(row_number)].value = PERSON[i]['GRP1_REG']
+    main_workbook.save('SeminarDatasheet.xlsx')
