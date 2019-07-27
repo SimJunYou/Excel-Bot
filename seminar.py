@@ -42,6 +42,8 @@ def start(bot, update):
     update.message.reply_text("Welcome to the Redesign Seminar.")
     update.message.reply_text("Last 5 digits of your NRIC:")
 
+    logger.info("User %s initiates contact", update.message.from_user.first_name)
+
     return TYPING_NRIC
 
 def validate_nric(nric):
@@ -59,6 +61,7 @@ def get_nric(bot, update, user_data):
         update.message.reply_text('Is this correct? Yes/No', reply_markup=markup)
 
         return RESPONSE
+
     
     else:
         update.message.reply_text(
@@ -83,7 +86,8 @@ def final(bot, update, user_data):
     elif text.lower() == "no":
         update.message.reply_text("Last 5 digits of your NRIC:")
         return TYPING_NRIC
-                              
+
+    logger.info("User {}{} completes".format(update.message.from_user.last_name, update.message.from_user.first_name))
     user_data.clear()
     return ConversationHandler.END
 
