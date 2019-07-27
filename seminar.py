@@ -103,7 +103,7 @@ def collectStats(bot, update):
             if each['GRP1_REG'] == 'P':
                 count += 1
         update.message.reply_text("Total: {}\nPresent: {}".format(total, count))
-        logger.info("Admin initiates stats report. Total: {}\nPresent: {}".format(total, count))
+        logger.info("Admin initiates stats report.\nTotal: {}, Present: {}".format(total, count))
     else:
         update.message.reply_text("You are not recognised!")
 

@@ -3,7 +3,7 @@
 
 def findNRIC(mainlist, nric):
     listOfNRICIndices = []
-    for i in range(0, 398):
+    for i in range(0, 399):
         if nric.lower() == mainlist[i]['NRIC'].lower():
             listOfNRICIndices.append(i)
 
@@ -23,7 +23,7 @@ def returnSeating(mainlist, nric):
 
 
 def saveFile(mainlist, worksheet, main_workbook):
-    for i in range(0, 398):
+    for i in range(0, 399):
         row_number = str(i + 2)
         worksheet['C' + str(row_number)].value = mainlist[i]['GRP1_REG']
 
