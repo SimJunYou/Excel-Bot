@@ -28,6 +28,6 @@ def returnSeating(mainlist, nric):
 def saveFile(mainlist):
     for i in range(0, 400):
         row_number = str(i + 2)
-        ws['C' + str(row_number)].value = PERSON[i]['GRP1_REG']
+        ws['C' + str(row_number)].value = mainlist[i]['GRP1_REG']
 
     main_workbook.save('SeminarDatasheet.xlsx')
