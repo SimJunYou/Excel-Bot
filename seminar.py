@@ -22,7 +22,7 @@ from excel import returnSeating, saveFile
 # read working copy of the workbook
 main_workbook = load_workbook('SeminarDatasheet.xlsx')
 ws = main_workbook['Sheet1']
-
+logger.info("Opening Excel list...")
 # dump all info values into PERSON dict array for access
 PERSON = []
 row_number = 2
@@ -31,7 +31,7 @@ while ws['A'+str(row_number)].value != None:
                     'GRP1': ws['B'+str(row_number)].value,
                     'GRP1_REG': ''})
     row_number += 1
-
+logger.info("Excel list dumped in memory")
 #################
 
 TYPING_NRIC, RESPONSE = range(2)
