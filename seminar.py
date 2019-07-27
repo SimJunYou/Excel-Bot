@@ -39,8 +39,10 @@ reply_keyboard = [['Yes', 'No']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 def start(bot, update):
-    update.message.reply_text("Welcome to the Redesign Seminar.")
-    update.message.reply_text("Last 5 digits of your NRIC:")
+    update.message.reply_text('''*Welcome to the Redesign Seminar!*
+    I'm here to mark your attendance and provide your seat letter.
+    You may leave this chat at any time, it will not affect the bot.
+    Please enter the last 5 characters of your NRIC:''')
 
     logger.info("User %s initiates contact", update.message.from_user.first_name)
 
@@ -59,18 +61,16 @@ def get_nric(bot, update, user_data):
     user_data['NRIC'] = text
     if validate_nric(text):
         update.message.reply_text(
-            'To confirm, the last 5 digits of your NRIC are {}'.format(text))
-        update.message.reply_text('Is this correct? Yes/No', reply_markup=markup)
+            '''To confirm, the last 5 characters of your NRIC are {}.
+            Is this correct? Yes/No'''.format(text), reply_markup=markup)
 
         return RESPONSE
     
     else:
         update.message.reply_text(
-            'The provided partial NRIC {} is incorrect.'.format(text))
-        update.message.reply_text(
-            'Please check that it is in the format 1234E (where full NRIC would be S9951234E)')
-
-        update.message.reply_text("Last 5 digits of your NRIC:")
+            '''The provided partial NRIC {} is incorrect.
+            Please check that it is in the format 1234E (where full NRIC would be S9951234E)
+            Let's try again. Last 5 characters of your NRIC:'''.format(text))
         
         return TYPING_NRIC
 
@@ -83,9 +83,11 @@ def final(bot, update, user_data):
         if seating == None:
             update.message.reply_text("Your NRIC is not in the list. Please look for ___")
         else:
-            update.message.reply_text("Your seating is: {}".format(seating))
+            update.message.reply_text('''Your seating is: {}.
+            Thank you for attending this seminar.
+            You may now leave this chat or type /start to register for another attendee.'''.format(seating))
     elif text.lower() == "no":
-        update.message.reply_text("Last 5 digits of your NRIC:")
+        update.message.reply_text("Let's try again. Enter the last 5 digits of your NRIC:")
         return TYPING_NRIC
 
     logger.info("User {} completes".format(update.message.from_user.first_name))
