@@ -15,11 +15,39 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
-#################
+###############
+### <EXCEL> ###
 
+# read working copy of the workbook
+main_workbook = load_workbook('SeminarDatasheet.xlsx')
+ws = main_workbook['Sheet1']
+logger.info("Opening Excel list...")
+# dump all info values into PERSON dict array for access
+PERSON = []
+row_number = 2
+while ws['A' + str(row_number)].value != None:
+    PERSON.append({'NRIC': ws['A' + str(row_number)].value,
+                   'GRP1': ws['B' + str(row_number)].value,
+                   'GRP1_REG': ''})
+    row_number += 1
+logger.info("Excel list dumped in memory")
+
+### </EXCEL> ###
+################
+
+# init values for Telegram
 TYPING_NRIC, RESPONSE = range(2)
 reply_keyboard = [['Yes', 'No']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+
+# init functions
+def validate_nric(nric):
+    if len(nric) == 5:
+        if nric[:4].isdigit() and nric[4].isalpha():
+            return True
+    return False
+
+###############
 
 def start(bot, update):
     update.message.reply_text(
@@ -33,13 +61,6 @@ Please enter the _last 5 characters_ of your NRIC:''',
     logger.info("User %s initiates contact", update.message.from_user.first_name)
 
     return TYPING_NRIC
-
-
-def validate_nric(nric):
-    if len(nric) == 5:
-        if nric[:4].isdigit() and nric[4].isalpha():
-            return True
-    return False
 
 
 def get_nric(bot, update, user_data):
@@ -78,6 +99,7 @@ def final(bot, update, user_data):
 
 ###############
 
+# admin stuff
 def collectStats(bot, update):
     if update.message.chat_id == 234058962:
         count = 0
@@ -138,22 +160,6 @@ def main():
 
     # log all errors
     dp.add_error_handler(error)
-
-    ### <EXCEL> ###
-    # read working copy of the workbook
-    main_workbook = load_workbook('SeminarDatasheet.xlsx')
-    ws = main_workbook['Sheet1']
-    logger.info("Opening Excel list...")
-    # dump all info values into PERSON dict array for access
-    PERSON = []
-    row_number = 2
-    while ws['A' + str(row_number)].value != None:
-        PERSON.append({'NRIC': ws['A' + str(row_number)].value,
-                       'GRP1': ws['B' + str(row_number)].value,
-                       'GRP1_REG': ''})
-        row_number += 1
-    logger.info("Excel list dumped in memory")
-    ### </EXCEL> ###
 
     # Start the Bot
     updater.start_polling()
