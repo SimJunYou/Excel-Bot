@@ -31,3 +31,4 @@ def saveFile(mainlist):
         ws['C' + str(row_number)].value = mainlist[i]['GRP1_REG']
 
     main_workbook.save('SeminarDatasheet.xlsx')
+    # should only be run at end of bot life
