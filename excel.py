@@ -1,12 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import openpyxl
+# import logging
+#
+# logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+#                     level=logging.INFO)
+#
+# logger = logging.getLogger(__name__)
 
 
 def findNRIC(mainlist, nric):
     listOfNRICIndices = []
     for i in range(0, 397):
+        logger.info(nric, mainlist[i]['NRIC'].lower())
         if nric.lower() == mainlist[i]['NRIC'].lower():
             listOfNRICIndices.append(i)
 
