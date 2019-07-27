@@ -56,7 +56,7 @@ def get_nric(bot, update, user_data):
     if validate_nric(text):
         update.message.reply_text(
             'To confirm, the last 5 digits of your NRIC are {}'.format(text))
-        update.message.reply_text('Is this correct? Yes/No', reply_keyboard=markup)
+        update.message.reply_text('Is this correct? Yes/No', reply_markup=markup)
 
         return RESPONSE
     
@@ -97,11 +97,13 @@ def chatID(bot, update):
     update.message.reply_text(update.message.chat_id)
 
 def killBot(bot, update):
-    #if update.message.chat_id ==
-    update.message.reply_text("Saving memory to Excel file...")
-    saveFile(ws)
-    update.message.reply_text("Bot is being killed")
-    threading.Thread(target=shutdown).start()
+    if update.message.user_id == '234058962':
+        update.message.reply_text("Saving memory to Excel file...")
+        saveFile(ws)
+        update.message.reply_text("Bot is being killed")
+        threading.Thread(target=shutdown).start()
+    else:
+        update.message.reply_text("You are not recognised!")
 
 ###############
 
