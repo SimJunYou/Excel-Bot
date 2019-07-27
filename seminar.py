@@ -135,9 +135,11 @@ def main():
     )
 
     def killBot(bot, update):
+        chat_id = update.message.chat_id
         if update.message.chat_id == 234058962:
             update.message.reply_text("Saving memory to Excel file...")
             saveFile(PERSON, ws, main_workbook)
+            bot.send_document(chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
             update.message.reply_text("Bot is being killed")
             logger.info("Bot has been killed")
             updater.stop()
@@ -165,7 +167,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    for i in range(0, 399):
-        row_number = str(i + 2)
-        ws['C' + str(row_number)].value = PERSON[i]['GRP1_REG']
-    main_workbook.save('SeminarDatasheet.xlsx')
