@@ -56,7 +56,7 @@ def get_nric(bot, update, user_data):
     if validate_nric(text):
         update.message.reply_text(
             'To confirm, the last 5 digits of your NRIC are {}'.format(text))
-        update.message.reply_text('Is this correct? Yes/No')
+        update.message.reply_text('Is this correct? Yes/No', reply_keyboard=markup)
 
         return RESPONSE
     
