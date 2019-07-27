@@ -1,1 +1,1 @@
-worker: python reportbot.py
+worker: python seminar.py
