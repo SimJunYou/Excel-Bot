@@ -25,7 +25,7 @@ ws = main_workbook['Sheet1']
 
 # dump all info values into PERSON dict array for access
 PERSON = []
-for i in range(2,400):
+for i in range(2,401):
     row_number = str(i)
     PERSON.append( {'NRIC': ws['A'+str(row_number)].value,
                     'GRP1': ws['B'+str(row_number)].value,
