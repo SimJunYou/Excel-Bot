@@ -25,12 +25,12 @@ ws = main_workbook['Sheet1']
 
 # dump all info values into PERSON dict array for access
 PERSON = []
-for i in range(2,401):
-    row_number = str(i)
+row_number = 2
+while ws['A'+str(row_number)].value != '':
     PERSON.append( {'NRIC': ws['A'+str(row_number)].value,
                     'GRP1': ws['B'+str(row_number)].value,
                     'GRP1_REG': ''})
-
+    row_number += 1
 
 #################
 
@@ -39,10 +39,13 @@ reply_keyboard = [['Yes', 'No']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 def start(bot, update):
-    update.message.reply_text('''*Welcome to the Redesign Seminar!*
-    I'm here to mark your attendance and provide your seat letter.
-    You may leave this chat at any time, it will not affect the bot.
-    Please enter the last 5 characters of your NRIC:''')
+    update.message.reply_text(
+''' _Welcome to the Redesign Seminar!_
+*============================*
+I'm here to mark your attendance and provide your seat letter. You may leave this chat at any time, it will not affect the bot.
+
+Please enter the _last 5 characters_ of your NRIC:''',
+        parse_mode = 'Markdown')
 
     logger.info("User %s initiates contact", update.message.from_user.first_name)
 
@@ -61,16 +64,14 @@ def get_nric(bot, update, user_data):
     user_data['NRIC'] = text
     if validate_nric(text):
         update.message.reply_text(
-            '''To confirm, the last 5 characters of your NRIC are {}.
-            Is this correct? Yes/No'''.format(text), reply_markup=markup)
+            "To confirm, the last 5 characters of your NRIC are {}.\n\nIs this correct? Yes/No".format(text), reply_markup=markup)
 
         return RESPONSE
     
     else:
         update.message.reply_text(
-            '''The provided partial NRIC {} is incorrect.
-            Please check that it is in the format 1234E (where full NRIC would be S9951234E)
-            Let's try again. Last 5 characters of your NRIC:'''.format(text))
+            "*The provided partial NRIC {} is incorrect!* Please check that it is in the format 1234E (where full NRIC would be S9951234E)\n\nLet's try again. Last 5 characters of your NRIC:".format(text),
+            parse_mode = 'Markdown')
         
         return TYPING_NRIC
 
@@ -81,11 +82,9 @@ def final(bot, update, user_data):
         #MAIN ACTION
         seating = returnSeating(PERSON, user_data['NRIC'])
         if seating == None:
-            update.message.reply_text("Your NRIC is not in the list. Please look for ___")
+            update.message.reply_text("We cannot find your NRIC, please look for assistance around the venue.\n\nYou may now leave this chat or type /start to register for another attendee.")
         else:
-            update.message.reply_text('''Your seating is: {}.
-            Thank you for attending this seminar.
-            You may now leave this chat or type /start to register for another attendee.'''.format(seating))
+            update.message.reply_text('''Your seating is: {}.\n\nThank you for attending this seminar! You may now leave this chat or type /start to register for another attendee.'''.format(seating))
     elif text.lower() == "no":
         update.message.reply_text("Let's try again. Enter the last 5 digits of your NRIC:")
         return TYPING_NRIC
