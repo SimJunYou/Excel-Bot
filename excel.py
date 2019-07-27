@@ -6,7 +6,7 @@ import openpyxl
 
 def findNRIC(mainlist, nric):
     listOfNRICIndices = []
-    for i in range(0, 399):
+    for i in range(0, 397):
         if nric.lower() == mainlist[i]['NRIC'].lower():
             listOfNRICIndices.append(i)
 
