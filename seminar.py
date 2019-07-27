@@ -39,7 +39,8 @@ reply_keyboard = [['Yes', 'No']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
 def start(bot, update):
-    update.message.reply_text("Last 6 digits of your NRIC:")
+    update.message.reply_text("Welcome to the Redesign Seminar.")
+    update.message.reply_text("Last 5 digits of your NRIC:")
 
     return TYPING_NRIC
 
@@ -55,7 +56,7 @@ def get_nric(bot, update, user_data):
     if validate_nric(text):
         update.message.reply_text(
             'To confirm, the last 5 digits of your NRIC are {}'.format(text))
-        update.message.reply_text('Your last name as provided for the seminar:')
+        update.message.reply_text('Is this correct? Yes/No')
 
         return RESPONSE
     
@@ -76,7 +77,7 @@ def final(bot, update, user_data):
         #MAIN ACTION
         seating = returnSeating(ws, user_data['NRIC'])
         if not seating:
-            update.message.reply_text('Please look for ___')
+            update.message.reply_text("Your NRIC is not in the list. Please look for ___")
         else:
             update.message.reply_text("Your seating is: {}".format(seating))
     elif text.lower() == "no":
