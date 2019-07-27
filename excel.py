@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging, threading
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+
+logger = logging.getLogger(__name__)
+
 def findNRIC(mainlist, nric):
     listOfNRICIndices = []
     for i in range(0, 399):
@@ -26,6 +33,6 @@ def saveFile(mainlist, worksheet, main_workbook):
     for i in range(0, 399):
         row_number = str(i + 2)
         worksheet['C' + str(row_number)].value = mainlist[i]['GRP1_REG']
-
+    logger.info("saveFile is run")
     main_workbook.save('SeminarDatasheet.xlsx')
     # should only be run at end of bot life
