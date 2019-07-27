@@ -80,7 +80,7 @@ def final(bot, update, user_data):
     if text.lower() == "yes":
         #MAIN ACTION
         seating = returnSeating(PERSON, user_data['NRIC'])
-        if not seating:
+        if seating == None:
             update.message.reply_text("Your NRIC is not in the list. Please look for ___")
         else:
             update.message.reply_text("Your seating is: {}".format(seating))
@@ -91,24 +91,6 @@ def final(bot, update, user_data):
     logger.info("User {}{} completes".format(update.message.from_user.last_name, update.message.from_user.first_name))
     user_data.clear()
     return ConversationHandler.END
-
-###############
-
-def shutdown():
-    updater.stop()
-    updater.is_idle = False
-
-def chatID(bot, update):
-    update.message.reply_text(update.message.chat_id)
-
-def killBot(bot, update):
-    if update.message.user_id == '234058962':
-        update.message.reply_text("Saving memory to Excel file...")
-        saveFile(PERSON, ws, main_workbook)
-        update.message.reply_text("Bot is being killed")
-        threading.Thread(target=shutdown).start()
-    else:
-        update.message.reply_text("You are not recognised!")
 
 ###############
 
@@ -144,9 +126,25 @@ def main():
         fallbacks=[]
     )
 
+
+    def shutdown():
+        updater.stop()
+        updater.is_idle = False
+
+    def killBot(bot, update):
+        if update.message.chat_id == 234058962:
+            update.message.reply_text("Saving memory to Excel file...")
+            saveFile(PERSON, ws, main_workbook)
+            update.message.reply_text("Bot is being killed")
+            logger.info("Bot has been killed")
+            updater.stop()
+        else:
+            update.message.reply_text("You are not recognised!")
+
+
+
     dp.add_handler(conv_handler)
     dp.add_handler(CommandHandler('kill', killBot))
-    dp.add_handler(CommandHandler('id', chatID))
 
     # log all errors
     dp.add_error_handler(error)
