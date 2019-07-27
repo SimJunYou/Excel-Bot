@@ -94,6 +94,19 @@ def final(bot, update, user_data):
 
 ###############
 
+def collectStats(bot, update):
+    if update.message.chat_id == 234058962:
+        count = 0
+        total = 0
+        for each in PERSON:
+            total += 1
+            if each['GRP1_REG'] == 'P':
+                count += 1
+        update.message.reply_text("Total: {}\nPresent: {}".format(total, count))
+        logger.info("Admin initiates stats report. Total: {}\nPresent: {}".format(total, count))
+    else:
+        update.message.reply_text("You are not recognised!")
+
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
@@ -110,19 +123,14 @@ def main():
     # Add conversation handler with the states GENDER, PHOTO, LOCATION and BIO
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('start', start)],
-
         states={
             TYPING_NRIC: [MessageHandler(Filters.text,
                                            get_nric,
-                                           pass_user_data=True),
-                            ],
-
+                                           pass_user_data=True)],
             RESPONSE: [RegexHandler('^Yes|No$',
                                           final,
-                                          pass_user_data=True),
-                       ],
+                                          pass_user_data=True)]
         },
-
         fallbacks=[]
     )
 
@@ -145,6 +153,7 @@ def main():
 
     dp.add_handler(conv_handler)
     dp.add_handler(CommandHandler('kill', killBot))
+    dp.add_handler(CommandHandler('stats', collectStats))
 
     # log all errors
     dp.add_error_handler(error)
