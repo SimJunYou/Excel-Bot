@@ -26,7 +26,7 @@ ws = main_workbook['Sheet1']
 # dump all info values into PERSON dict array for access
 PERSON = []
 row_number = 2
-while ws['A'+str(row_number)].value != '':
+while ws['A'+str(row_number)].value != None:
     PERSON.append( {'NRIC': ws['A'+str(row_number)].value,
                     'GRP1': ws['B'+str(row_number)].value,
                     'GRP1_REG': ''})
