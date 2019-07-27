@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging
-
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-
-logger = logging.getLogger(__name__)
-
-
 def findNRIC(mainlist, nric):
     listOfNRICIndices = []
     for i in range(0, 398):
@@ -23,7 +15,6 @@ def findNRIC(mainlist, nric):
 
 def returnSeating(mainlist, nric):
     index = findNRIC(mainlist, nric)
-    print(index)
     if index != None:
         mainlist[index]['GRP1_REG'] = 'P'
         return mainlist[index]['GRP1']

@@ -88,7 +88,7 @@ def final(bot, update, user_data):
         update.message.reply_text("Last 5 digits of your NRIC:")
         return TYPING_NRIC
 
-    logger.info("User {}{} completes".format(update.message.from_user.last_name, update.message.from_user.first_name))
+    logger.info("User {} completes".format(update.message.from_user.first_name))
     user_data.clear()
     return ConversationHandler.END
 
@@ -134,11 +134,6 @@ def main():
         fallbacks=[]
     )
 
-
-    def shutdown():
-        updater.stop()
-        updater.is_idle = False
-
     def killBot(bot, update):
         if update.message.chat_id == 234058962:
             update.message.reply_text("Saving memory to Excel file...")
@@ -146,6 +141,7 @@ def main():
             update.message.reply_text("Bot is being killed")
             logger.info("Bot has been killed")
             updater.stop()
+            updater.is_idle = False
         else:
             update.message.reply_text("You are not recognised!")
 
