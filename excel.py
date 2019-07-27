@@ -18,6 +18,7 @@ def findNRIC(mainlist, nric):
 
 def returnSeating(mainlist, nric):
     index = findNRIC(mainlist, nric)
+    print(index)
     if type(index) == int:
         mainlist[index]['GRP1_REG'] = 'P'
         return mainlist[index]['GRP1']
