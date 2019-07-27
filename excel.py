@@ -6,7 +6,7 @@ import openpyxl
 
 def findNRIC(mainlist, nric):
     listOfNRICIndices = []
-    for i in range(0, 400):
+    for i in range(0, 399):
         if nric.lower() == mainlist[i]['NRIC'].lower():
             listOfNRICIndices.append(i)
 
@@ -25,10 +25,10 @@ def returnSeating(mainlist, nric):
     return False
 
 
-def saveFile(mainlist):
+def saveFile(mainlist, worksheet, main_workbook):
     for i in range(0, 400):
         row_number = str(i + 2)
-        ws['C' + str(row_number)].value = mainlist[i]['GRP1_REG']
+        worksheet['C' + str(row_number)].value = mainlist[i]['GRP1_REG']
 
     main_workbook.save('SeminarDatasheet.xlsx')
     # should only be run at end of bot life

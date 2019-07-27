@@ -5,7 +5,7 @@ from telegram import ReplyKeyboardMarkup
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
 
-import logging
+import logging, threading
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -46,11 +46,13 @@ def start(bot, update):
 
     return TYPING_NRIC
 
+
 def validate_nric(nric):
     if len(nric) == 5:
         if nric[:4].isdigit() and nric[4].isalpha():
             return True
     return False
+
 
 def get_nric(bot, update, user_data):
     text = update.message.text
@@ -61,7 +63,6 @@ def get_nric(bot, update, user_data):
         update.message.reply_text('Is this correct? Yes/No', reply_markup=markup)
 
         return RESPONSE
-
     
     else:
         update.message.reply_text(
@@ -78,7 +79,7 @@ def final(bot, update, user_data):
     text = update.message.text
     if text.lower() == "yes":
         #MAIN ACTION
-        seating = returnSeating(ws, user_data['NRIC'])
+        seating = returnSeating(PERSON, user_data['NRIC'])
         if not seating:
             update.message.reply_text("Your NRIC is not in the list. Please look for ___")
         else:
@@ -103,7 +104,7 @@ def chatID(bot, update):
 def killBot(bot, update):
     if update.message.user_id == '234058962':
         update.message.reply_text("Saving memory to Excel file...")
-        saveFile(ws)
+        saveFile(PERSON, ws, main_workbook)
         update.message.reply_text("Bot is being killed")
         threading.Thread(target=shutdown).start()
     else:
