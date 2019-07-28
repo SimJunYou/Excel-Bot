@@ -1,3 +1,3 @@
-# Telegram Bot (Python/Heroku)
+# Redesign Seminar Attendance Taking Bot (Python/Heroku)
 
-Personal project, please ignore
+Takes in user identification, returns assigned seating from an Excel file, and marks attendance in the Excel file.
