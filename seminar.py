@@ -8,15 +8,16 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 from openpyxl import load_workbook
 from excel import returnSeating, saveFile
 
-import logging, threading
+import logging
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-###############
-### <EXCEL> ###
+# welcome to my Macbook!
+
+# <EXCEL>
 
 # read working copy of the workbook
 main_workbook = load_workbook('SeminarDatasheet.xlsx')
@@ -32,31 +33,33 @@ while ws['A' + str(row_number)].value != None:
     row_number += 1
 logger.info("Excel list dumped in memory")
 
-### </EXCEL> ###
-################
+# </EXCEL>
+
 
 # init values for Telegram
 TYPING_NRIC, RESPONSE = range(2)
 reply_keyboard = [['Yes', 'No']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
-# init functions
-def validate_nric(nric):
+
+def validate_nric(nric):  # init functions
     if len(nric) == 5:
         if nric[:4].isdigit() and nric[4].isalpha():
             return True
     return False
 
+
 ###############
+
 
 def start(bot, update):
     update.message.reply_text(
-''' _Welcome to the Redesign Seminar!_
+        ''' _Welcome to the Redesign Seminar!_
 *============================*
 I'm here to mark your attendance and provide your seat letter. You may leave this chat at any time, it will not affect the bot.
 
 Please enter the _last 5 characters_ of your NRIC:''',
-        parse_mode = 'Markdown')
+        parse_mode='Markdown')
 
     logger.info("User %s initiates contact", update.message.from_user.first_name)
 
@@ -68,27 +71,32 @@ def get_nric(bot, update, user_data):
     user_data['NRIC'] = text
     if validate_nric(text):
         update.message.reply_text(
-            "To confirm, the last 5 characters of your NRIC are {}.\n\nIs this correct? Yes/No".format(text), reply_markup=markup)
+            "To confirm, the last 5 characters of your NRIC are {}.\n\nIs this correct? Yes/No".format(text),
+            reply_markup=markup)
 
         return RESPONSE
-    
+
     else:
         update.message.reply_text(
-            "*The provided partial NRIC {} is incorrect!* Please check that it is in the format 1234E (where full NRIC would be S9951234E)\n\nLet's try again. Last 5 characters of your NRIC:".format(text),
-            parse_mode = 'Markdown')
-        
+            "*The provided partial NRIC {} is incorrect!* Please check that it is in the format 1234E (where full NRIC would be S9951234E)\n\nLet's try again. Last 5 characters of your NRIC:".format(
+                text),
+            parse_mode='Markdown')
+
         return TYPING_NRIC
 
 
 def final(bot, update, user_data):
     text = update.message.text
     if text.lower() == "yes":
-        #MAIN ACTION
+        # MAIN ACTION
         seating = returnSeating(PERSON, user_data['NRIC'])
         if seating == None:
-            update.message.reply_text("We cannot find your NRIC, please look for assistance around the venue.\n\nYou may now leave this chat or type /start to register for another attendee.")
+            update.message.reply_text(
+                "We cannot find your NRIC, please look for assistance around the venue.\n\nYou may now leave this chat or type /start to register for another attendee.")
         else:
-            update.message.reply_text('''Your seating is: {}.\n\nThank you for attending this seminar! You may now leave this chat or type /start to register for another attendee.'''.format(seating))
+            update.message.reply_text(
+                '''Your seating is: {}.\n\nThank you for attending this seminar! You may now leave this chat or type /start to register for another attendee.'''.format(
+                    seating))
     elif text.lower() == "no":
         update.message.reply_text("Let's try again. Enter the last 5 digits of your NRIC:")
         return TYPING_NRIC
@@ -96,6 +104,7 @@ def final(bot, update, user_data):
     logger.info("User {} completes".format(update.message.from_user.first_name))
     user_data.clear()
     return ConversationHandler.END
+
 
 ###############
 
@@ -113,9 +122,11 @@ def collectStats(bot, update):
     else:
         update.message.reply_text("You are not recognised!")
 
+
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
+
 
 ###############
 
@@ -131,11 +142,11 @@ def main():
         entry_points=[CommandHandler('start', start)],
         states={
             TYPING_NRIC: [MessageHandler(Filters.text,
-                                           get_nric,
-                                           pass_user_data=True)],
+                                         get_nric,
+                                         pass_user_data=True)],
             RESPONSE: [RegexHandler('^Yes|No$',
-                                          final,
-                                          pass_user_data=True)]
+                                    final,
+                                    pass_user_data=True)]
         },
         fallbacks=[]
     )
@@ -152,7 +163,6 @@ def main():
             updater.is_idle = False
         else:
             update.message.reply_text("You are not recognised!")
-
 
     dp.add_handler(conv_handler)
     dp.add_handler(CommandHandler('kill', killBot))
