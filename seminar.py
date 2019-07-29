@@ -56,7 +56,7 @@ def start(bot, update):
     update.message.reply_text(
         ''' _Welcome to the Redesign Seminar!_
 *============================*
-I'm here to mark your attendance and provide your assigned seating. You may leave this chat at any time, it will not affect the bot.
+I'm here to mark your attendance and provide your assigned group. You may leave this chat at any time, it will not affect the bot.
 
 Please enter the _last 5 characters_ of your NRIC:''',
         parse_mode='Markdown')
