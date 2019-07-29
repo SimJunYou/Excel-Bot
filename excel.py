@@ -41,6 +41,7 @@ def createFile(worksheet, rList):
 
     while worksheet[cellNRIC].value is not None:
         NRIC = worksheet[cellNRIC].value
+        logger.info(NRIC, rList.get(NRIC))
         if rList.get(NRIC) == 'P':
             worksheet['C' + str(row_number)].value = 'P'
         row_number += 1
