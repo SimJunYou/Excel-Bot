@@ -9,8 +9,8 @@ from openpyxl import load_workbook
 from excel import returnSeating, createFile
 
 import logging
-
 import os, redis
+import string, random
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -32,7 +32,8 @@ while ws['A' + str(row_number)].value is not None:
     NRIC = ws['A' + str(row_number)].value
     GRP_ID = ws['B' + str(row_number)].value
     PERSON.append({'NRIC': NRIC,
-                   'GRP1': GRP_ID})
+                   'GRP1': GRP_ID,
+                   'GRP1_REG': ''})
     rList.mset({NRIC: ''})  # dump NRIC into redis
     row_number += 1
 
@@ -49,6 +50,8 @@ reply_keyboard = [['Yes', 'No']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 remove = ReplyKeyboardRemove(remove_keyboard=True)
 
+# init the kill switch! ^$ is regex for start and end with, meaning perfect match
+killSwitch = '^' + ''.join(random.choices(string.ascii_uppercase, k=15)) + '$'
 
 def validate_nric(nric):
     if len(nric) == 5:
@@ -101,13 +104,13 @@ def final(bot, update, user_data):
         if seating is None:
             update.message.reply_text(
                 "We cannot find your NRIC, please look for assistance around the venue.\n\nYou may now leave this chat or type /start to register another NRIC entry",
-                reply_markup = remove)
+                reply_markup=remove)
         else:
             seating = seating.upper()
             update.message.reply_text(
                 '''Your assigned group is: {}.\n\nThank you for attending this seminar! You may now leave this chat or type /start to register another NRIC entry.'''.format(
                     seating),
-                reply_markup = remove)
+                reply_markup=remove)
     elif text.lower() == "no":
         update.message.reply_text("Let's try again. Enter the last 5 digits of your NRIC:", reply_markup = remove)
         return TYPING_NRIC
@@ -133,13 +136,25 @@ def collectStats(bot, update):
     else:
         update.message.reply_text("You are not recognised!")
 
+
 def sendFile(bot, update):
     if update.message.chat_id == 234058962:
-
-        update.message.reply_text("Good day, admin.\nTotal: {}, Present: {}".format(total, count))
-        logger.info("Admin initiates stats report.\nTotal: {}, Present: {}".format(total, count))
+        update.message.reply_text("Good day, admin")
+        logger.info("Admin requests latest file")
+        createFile(ws, rList)
+        bot.send_document(chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
     else:
         update.message.reply_text("You are not recognised!")
+
+
+def killCommand(bot, update):
+    if update.message.chat_id == 234058962:
+        update.message.reply_text("Are you absolutely certain you want to kill the bot?")
+        update.message.reply_text("Type the kill-code to kill the bot: "+killSwitch)
+        logger.info("Admin initiates kill command, requesting confirmation")
+    else:
+        update.message.reply_text("You are not recognised!")
+
 
 def error(bot, update, error):
     """Log Errors caused by Updates."""
@@ -169,6 +184,7 @@ def main():
         fallbacks=[]
     )
 
+
     def killBot(bot, update):
         chat_id = update.message.chat_id
         if update.message.chat_id == 234058962:
@@ -183,8 +199,10 @@ def main():
             update.message.reply_text("You are not recognised!")
 
     dp.add_handler(conv_handler)
-    dp.add_handler(CommandHandler('kill', killBot))
+    dp.add_handler(CommandHandler('kill', killCommand))
     dp.add_handler(CommandHandler('stats', collectStats))
+    dp.add_handler(CommandHandler('file', sendFile))
+    dp.add_handler(RegexHandler(killSwitch, killBot))
 
     # log all errors
     dp.add_error_handler(error)

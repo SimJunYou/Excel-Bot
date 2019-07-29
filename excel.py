@@ -25,6 +25,7 @@ def findNRIC(mainlist, nric):
 def returnSeating(mainlist, nric, rList):
     index = findNRIC(mainlist, nric)
     if index is not None:
+        mainlist['GRP1_REG'] = 'P'
         rList.mset({mainlist[index]['NRIC']: 'P'})  # mark attendance in rList
         return mainlist[index]['GRP1']
 
@@ -41,7 +42,7 @@ def createFile(worksheet, rList):
     while worksheet[cellNRIC].value is not None:
         NRIC = ws[cellNRIC].value
         if rList.get(NRIC).decode("utf-8") == 'P':
-            ws['C' + str(row_number)].value = 'P'
+            worksheet['C' + str(row_number)].value = 'P'
         row_number += 1
         cellNRIC = 'A' + str(row_number)
 
