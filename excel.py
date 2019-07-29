@@ -49,7 +49,7 @@ def createFile(worksheet, rList):
         cellNRIC = 'A' + str(row_number)
 
     logger.info('Updating complete, saving excel file')
-    main_workbook.save('SeminarDatasheet.xlsx')
+    main_workbook.save('Attendance.xlsx')
     logger.info("File creation complete")
 
 

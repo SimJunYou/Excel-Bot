@@ -142,7 +142,7 @@ def sendFile(bot, update):
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest file")
         createFile(ws, rList)
-        bot.send_document(update.message.chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
+        bot.send_document(update.message.chat_id, document=open('Attendance.xlsx', 'rb'))
     else:
         update.message.reply_text("You are not recognised!")
 
@@ -190,7 +190,7 @@ def main():
         if update.message.chat_id == 234058962:
             update.message.reply_text("Running createFile subroutine...")
             createFile(ws, rList)
-            bot.send_document(chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
+            bot.send_document(chat_id, document=open('Attendance.xlsx', 'rb'))
             update.message.reply_text("Bot is being killed. Goodbye, admin.")
             logger.info("Bot has been killed.")
             updater.stop()
