@@ -27,7 +27,7 @@ def returnSeating(mainlist, nric, rList):
     if index is not None:
         mainlist[index]['GRP1_REG'] = 'P'
         logger.info(mainlist[index]['NRIC'])
-        rList.mset({mainlist[index]['NRIC']: 'P'})  # mark attendance in rList
+        rList.set(mainlist[index]['NRIC'], 'P')  # mark attendance in rList
         return mainlist[index]['GRP1']
 
     return None
