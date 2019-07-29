@@ -17,7 +17,7 @@ def findNRIC(mainlist, nric):
             listOfNRICIndices.append(i)
 
     if len(listOfNRICIndices) == 1:
-        return True
+        return listOfNRICIndices[0]
     else:
         return None
 
@@ -25,7 +25,7 @@ def findNRIC(mainlist, nric):
 def returnSeating(mainlist, nric, rList):
     index = findNRIC(mainlist, nric)
     if index is not None:
-        mainlist['GRP1_REG'] = 'P'
+        mainlist[index]['GRP1_REG'] = 'P'
         rList.mset({mainlist[index]['NRIC']: 'P'})  # mark attendance in rList
         return mainlist[index]['GRP1']
 
