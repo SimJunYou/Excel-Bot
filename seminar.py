@@ -79,7 +79,7 @@ Please enter the _last 5 characters_ of your NRIC:''',
 
 def get_nric(bot, update, user_data):
     text = update.message.text
-    user_data['NRIC'] = text
+    user_data['NRIC'] = text.upper()
     if validate_nric(text):
         update.message.reply_text(
             "To confirm, the last 5 characters of your NRIC are {}.\n\nIs this correct? Yes/No".format(text),
