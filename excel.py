@@ -40,7 +40,7 @@ def createFile(worksheet, rList):
     cellNRIC = 'A' + str(row_number)
 
     while worksheet[cellNRIC].value is not None:
-        NRIC = ws[cellNRIC].value
+        NRIC = worksheet[cellNRIC].value
         if rList.get(NRIC).decode("utf-8") == 'P':
             worksheet['C' + str(row_number)].value = 'P'
         row_number += 1
