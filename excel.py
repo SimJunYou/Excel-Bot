@@ -34,17 +34,18 @@ def returnSeating(mainlist, nric, rList):
     return None
 
 
-def createFile(worksheet, rList):
+def createFile(rList):
     logger.info('Good day, admin. Loading excel file into memory and updating...')
 
     main_workbook = load_workbook('SeminarDatasheet.xlsx')
+    worksheet = main_workbook['Sheet1']
     row_number = 2
     cellNRIC = 'A' + str(row_number)
 
     while worksheet[cellNRIC].value is not None:
         NRIC = worksheet[cellNRIC].value
         if rList.get(NRIC).decode('utf-8') == 'P':
-            logger.info('Inputting into worksheet')
+            logger.info('C' + str(row_number))
             worksheet['C' + str(row_number)] = 'P'
         row_number += 1
         cellNRIC = 'A' + str(row_number)

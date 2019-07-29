@@ -189,7 +189,7 @@ def main():
         chat_id = update.message.chat_id
         if update.message.chat_id == 234058962:
             update.message.reply_text("Running createFile subroutine...")
-            createFile(ws, rList)
+            createFile(rList)
             bot.send_document(chat_id, document=open('Attendance.xlsx', 'rb'))
             update.message.reply_text("Bot is being killed. Goodbye, admin.")
             logger.info("Bot has been killed.")
