@@ -142,7 +142,7 @@ def sendFile(bot, update):
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest file")
         createFile(ws, rList)
-        bot.send_document(chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
+        bot.send_document(update.message.chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
     else:
         update.message.reply_text("You are not recognised!")
 
