@@ -150,7 +150,7 @@ def sendFile(bot, update):
 def killCommand(bot, update):
     if update.message.chat_id == 234058962:
         update.message.reply_text("Are you absolutely certain you want to kill the bot?")
-        update.message.reply_text("Type the kill-code to kill the bot: "+killSwitch)
+        update.message.reply_text("Type the kill-code to kill the bot: "+killSwitch[1:-1])
         logger.info("Admin initiates kill command, requesting confirmation")
     else:
         update.message.reply_text("You are not recognised!")
