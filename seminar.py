@@ -6,9 +6,11 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
                           ConversationHandler)
 
 from openpyxl import load_workbook
-from excel import returnSeating, saveFile
+from excel import returnSeating, createFile
 
 import logging
+
+import os, redis
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -17,32 +19,38 @@ logger = logging.getLogger(__name__)
 
 # welcome to my Macbook!
 
-# <EXCEL>
-
-# read working copy of the workbook
+# <EXCEL AND REDIS>
+logger.info("Opening Excel file")
 main_workbook = load_workbook('SeminarDatasheet.xlsx')
 ws = main_workbook['Sheet1']
-logger.info("Opening Excel list...")
-# dump all info values into PERSON dict array for access
-PERSON = []
-row_number = 2
-while ws['A' + str(row_number)].value != None:
-    PERSON.append({'NRIC': ws['A' + str(row_number)].value,
-                   'GRP1': ws['B' + str(row_number)].value,
-                   'GRP1_REG': ''})
-    row_number += 1
-logger.info("Excel list dumped in memory")
 
-# </EXCEL>
+rList = redis.from_url(os.environ.get("REDIS_URL"))
+PERSON = []  # PERSON for local work, redis for heroku database
+
+row_number = 2
+while ws['A' + str(row_number)].value is not None:
+    NRIC = ws['A' + str(row_number)].value
+    GRP_ID = ws['B' + str(row_number)].value
+    PERSON.append({'NRIC': NRIC,
+                   'GRP1': GRP_ID})
+    rList.mset({NRIC: ''})  # dump NRIC into redis
+    row_number += 1
+
+logger.info("Excel file dumped into working list and redis")
+main_workbook.save('SeminarDatasheet.xlsx')
+logger.info("Excel file closed")
+
+# </EXCEL AND REDIS>
 
 
 # init values for Telegram
 TYPING_NRIC, RESPONSE = range(2)
 reply_keyboard = [['Yes', 'No']]
 markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
-remove = ReplyKeyboardRemove(remove_keyboard = True)
+remove = ReplyKeyboardRemove(remove_keyboard=True)
 
-def validate_nric(nric):  # init functions
+
+def validate_nric(nric):
     if len(nric) == 5:
         if nric[:4].isdigit() and nric[4].isalpha():
             return True
@@ -89,8 +97,8 @@ def final(bot, update, user_data):
     text = update.message.text
     if text.lower() == "yes":
         # MAIN ACTION
-        seating = returnSeating(PERSON, user_data['NRIC'])
-        if seating == None:
+        seating = returnSeating(PERSON, user_data['NRIC'], rList)
+        if seating is None:
             update.message.reply_text(
                 "We cannot find your NRIC, please look for assistance around the venue.\n\nYou may now leave this chat or type /start to register another NRIC entry",
                 reply_markup = remove)
@@ -125,6 +133,13 @@ def collectStats(bot, update):
     else:
         update.message.reply_text("You are not recognised!")
 
+def sendFile(bot, update):
+    if update.message.chat_id == 234058962:
+
+        update.message.reply_text("Good day, admin.\nTotal: {}, Present: {}".format(total, count))
+        logger.info("Admin initiates stats report.\nTotal: {}, Present: {}".format(total, count))
+    else:
+        update.message.reply_text("You are not recognised!")
 
 def error(bot, update, error):
     """Log Errors caused by Updates."""
@@ -157,10 +172,10 @@ def main():
     def killBot(bot, update):
         chat_id = update.message.chat_id
         if update.message.chat_id == 234058962:
-            update.message.reply_text("Saving memory to Excel file...")
-            saveFile(PERSON, ws, main_workbook)
+            update.message.reply_text("Running createFile subroutine...")
+            createFile(ws, rList)
             bot.send_document(chat_id, document=open('SeminarDatasheet.xlsx', 'rb'))
-            update.message.reply_text("Bot is being killed...")
+            update.message.reply_text("Bot is being killed. Goodbye, admin.")
             logger.info("Bot has been killed.")
             updater.stop()
             updater.is_idle = False
