@@ -141,7 +141,7 @@ def sendFile(bot, update):
     if update.message.chat_id == 234058962:
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest file")
-        createFile(ws, rList)
+        createFile(rList)
         bot.send_document(update.message.chat_id, document=open('Attendance.xlsx', 'rb'))
     else:
         update.message.reply_text("You are not recognised!")
