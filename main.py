@@ -60,9 +60,11 @@ def main():
 
     dp.add_handler(conv_handler)
     dp.add_handler(post_conv_handler)
-    dp.add_handler(CommandHandler('stats', utils.collectStats))
-    dp.add_handler(CommandHandler('attendance', utils.sendAttendanceFile))
-    dp.add_handler(CommandHandler('feedback', utils.sendFeedbackFile))
+    dp.add_handler(CommandHandler('help', utils.adminHelp))
+    dp.add_handler(CommandHandler('aStats', utils.attendanceStats))
+    dp.add_handler(CommandHandler('fStats', utils.feedbackStats))
+    dp.add_handler(CommandHandler('aFile', utils.sendAttendanceFile))
+    dp.add_handler(CommandHandler('fFile', utils.sendFeedbackFile))
 
     # log all errors
     dp.add_error_handler(error)
