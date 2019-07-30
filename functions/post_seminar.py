@@ -44,14 +44,17 @@ def question2(bot, update, user_data):
 
 def question3(bot, update, user_data):
     text = update.message.text
-    user_data['Question3'] = text
+    user_data['Question2'] = text
     update.message.reply_text(
         "*Feedback prompt 3:*\nAny other comments? *Please leave your name* if you want us to get back to you.",
         parse_mode='Markdown')
 
     return ENDPOST
 
+
 def endPost(bot, update, user_data):
+    text = update.message.text
+    user_data['Question3'] = text
     update.message.reply_text(
         "*Thank you for the feedback!*\nYou may now leave this chat.",
         parse_mode='Markdown')
