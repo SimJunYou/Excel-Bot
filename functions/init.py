@@ -12,6 +12,8 @@ main_workbook = load_workbook('SeminarDatasheet.xlsx')
 ws = main_workbook['Sheet1']
 
 rList = redis.from_url(os.environ.get("REDIS_URL"))
+rList.delete('Feedback')  # clearing feedback from tests
+
 PERSON = []  # PERSON for local work, redis for heroku database
 logger.info("Excel file dumped into working list and redis")
 

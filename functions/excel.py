@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from openpyxl import load_workbook
+from openpyxl import Workbook
 
 from functions.init import rList
 
@@ -57,12 +57,11 @@ def createFile_sem():
 def createFile_fb():
     logger.info('Feedback file requested. Loading excel file into memory and updating...')
 
-    main_workbook = load_workbook('SeminarDatasheet.xlsx')
-    worksheet = main_workbook['Sheet1']
+    main_workbook = Workbook()
+    worksheet = main_workbook.active
     row_number = 1
     cell1, cell2, cell3 = 'A' + str(row_number), 'B' + str(row_number), 'C' + str(row_number)
 
-    logger.info(rList.llen('Feedback'))
     for index in range(0, rList.llen('Feedback')):
         worksheet[cell1], worksheet[cell2], worksheet[cell3] = rList.lindex(index-1).decode('utf-8').split('||||')
         row_number += 1
