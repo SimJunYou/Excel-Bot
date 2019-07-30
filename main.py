@@ -42,18 +42,10 @@ markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 
-###############
-
-# admin stuff
-
-
-
 def error(bot, update, error):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, error)
 
-
-###############
 
 def main():
     # Create the Updater and pass it your bot's token.
@@ -64,34 +56,37 @@ def main():
 
     # Add conversation handler with the states TYPING_NRIC and RESPONSE
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+        entry_points=[CommandHandler('start', seminar.start)],
         states={
             TYPING_NRIC: [MessageHandler(Filters.text,
-                                         get_nric,
+                                         seminar.get_nric,
                                          pass_user_data=True)],
             RESPONSE: [RegexHandler('^Yes|No$',
-                                    final,
+                                    seminar.final,
                                     pass_user_data=True)]
         },
         fallbacks=[]
     )
 
-    # Add conversation handler with the states QN1, QN2, QN3
-    post_conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
-        states={
-            TYPING_NRIC: [MessageHandler(Filters.text,
-                                         get_nric,
-                                         pass_user_data=True)],
-            RESPONSE: [RegexHandler('^Yes|No$',
-                                    final,
-                                    pass_user_data=True)]
-        },
-        fallbacks=[]
-    )
+    # # Add conversation handler with the states QN1, QN2, QN3
+    # post_conv_handler = ConversationHandler(
+    #     entry_points=[CommandHandler('postevent', post_seminar.postevent)],
+    #     states={
+    #         QN1: [MessageHandler(Filters.text,
+    #                                      get_nric,
+    #                                      pass_user_data=True)],
+    #         QN2: [MessageHandler(Filters.text,
+    #                              get_nric,
+    #                              pass_user_data=True)],
+    #         QN3: [MessageHandler(Filters.text,
+    #                              get_nric,
+    #                              pass_user_data=True)]
+    #     },
+    #     fallbacks=[]
+    # )
 
-
-    dp.add_handler(conv_handler())
+    dp.add_handler(conv_handler)
+    # dp.add_handler(post_conv_handler)
     dp.add_handler(CommandHandler('stats', utils.collectStats))
     dp.add_handler(CommandHandler('file', utils.sendFile))
 
