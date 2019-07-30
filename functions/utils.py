@@ -65,6 +65,10 @@ def feedbackStats(bot, update):
         update.message.reply_text("You are not recognised!")
 
 
+def chatID(bot, update):
+    update.message.reply_text(update.message.chat_id)
+
+
 def sendAttendanceFile(bot, update):
     if update.message.chat_id == 234058962:
         update.message.reply_text("Good day, admin")
