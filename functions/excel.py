@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 def findNRIC(mainlist, nric):
     listOfNRICIndices = []
-    for i in range(0,len(mainlist)):
+    for i in range(0, len(mainlist)):
         if nric.lower() == mainlist[i]['NRIC'].lower():
             listOfNRICIndices.append(i)
 
@@ -34,8 +34,8 @@ def returnSeating(mainlist, nric):
     return None
 
 
-def createFile():
-    logger.info('Good day, admin. Loading excel file into memory and updating...')
+def createFile_sem():
+    logger.info('Attendance file requested. Loading excel file into memory and updating...')
 
     main_workbook = load_workbook('SeminarDatasheet.xlsx')
     worksheet = main_workbook['Sheet1']
@@ -53,6 +53,24 @@ def createFile():
     main_workbook.save('Attendance.xlsx')
     logger.info("File creation complete")
 
+
+def createFile_fb():
+    logger.info('Feedback file requested. Loading excel file into memory and updating...')
+
+    main_workbook = load_workbook('SeminarDatasheet.xlsx')
+    worksheet = main_workbook['Sheet1']
+    row_number = 1
+    cell1, cell2, cell3 = 'A' + str(row_number), 'B' + str(row_number), 'C' + str(row_number)
+
+    logger.info(rList.llen('Feedback'))
+    for index in range(0, rList.llen('Feedback')):
+        worksheet[cell1], worksheet[cell2], worksheet[cell3] = rList.lindex(index-1).decode('utf-8').split('||||')
+        row_number += 1
+        cell1, cell2, cell3 = 'A' + str(row_number), 'B' + str(row_number), 'C' + str(row_number)
+
+    logger.info('Updating complete, saving excel file')
+    main_workbook.save('Feedback.xlsx')
+    logger.info("File creation complete")
 
 # no longer needed due to redis
 

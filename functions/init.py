@@ -29,8 +29,8 @@ while ws['A' + str(row_number)].value is not None:
     row_number += 1
 
 
-TYPING_NRIC, RESPONSE = range(2) # for conv_handler
-QN1, QN2, QN3 = range(3)  # for post_conv_handler
+TYPING_NRIC, ENDSEM = range(2) # for conv_handler
+QN1_END, QN2_END, QN3_END, ENDPOST = range(3)  # for post_conv_handler
 
 
 # MAIN VARIABLES ARE: ws, rList, PERSON, TYPING_NRIC & RESPONSE, QN1 & QN2 & QN3

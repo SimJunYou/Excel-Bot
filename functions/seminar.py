@@ -5,7 +5,7 @@ from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
 
-from functions.init import PERSON, TYPING_NRIC, RESPONSE
+from functions.init import PERSON, TYPING_NRIC, ENDSEM
 from functions import excel, utils
 import logging
 
@@ -41,7 +41,7 @@ def get_nric(bot, update, user_data):
             "To confirm, the last 5 characters of your NRIC are {}.\n\nIs this correct? Yes/No".format(text),
             reply_markup=markup)
 
-        return RESPONSE
+        return ENDSEM
 
     else:
         update.message.reply_text(

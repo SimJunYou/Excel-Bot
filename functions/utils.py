@@ -36,12 +36,22 @@ def collectStats(bot, update):
         update.message.reply_text("You are not recognised!")
 
 
-def sendFile(bot, update):
+def sendAttendanceFile(bot, update):
     if update.message.chat_id == 234058962:
         update.message.reply_text("Good day, admin")
-        logger.info("Admin requests latest file")
-        excel.createFile()
+        logger.info("Admin requests latest attendance")
+        excel.createFile_sem()
         bot.send_document(update.message.chat_id, document=open('Attendance.xlsx', 'rb'))
+    else:
+        update.message.reply_text("You are not recognised!")
+
+
+def sendFeedbackFile(bot, update):
+    if update.message.chat_id == 234058962:
+        update.message.reply_text("Good day, admin")
+        logger.info("Admin requests latest feedback")
+        excel.createFile_fb()
+        bot.send_document(update.message.chat_id, document=open('Feedback.xlsx', 'rb'))
     else:
         update.message.reply_text("You are not recognised!")
 

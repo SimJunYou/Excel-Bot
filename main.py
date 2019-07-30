@@ -6,7 +6,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 
 import logging
 
-from functions.init import TYPING_NRIC, RESPONSE, QN1, QN2, QN3
+from functions.init import TYPING_NRIC, ENDSEM, QN1_END, QN2_END, QN3_END, ENDPOST
 from functions import seminar, post_seminar, utils
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -34,34 +34,38 @@ def main():
             TYPING_NRIC: [MessageHandler(Filters.text,
                                          seminar.get_nric,
                                          pass_user_data=True)],
-            RESPONSE: [RegexHandler('^Yes|No$',
-                                    seminar.final,
-                                    pass_user_data=True)]
+            ENDSEM: [RegexHandler('^Yes|No$',
+                                  seminar.final,
+                                  pass_user_data=True)]
         },
         fallbacks=[]
     )
 
-    # # Add conversation handler with the states QN1, QN2, QN3
-    # post_conv_handler = ConversationHandler(
-    #     entry_points=[CommandHandler('postevent', post_seminar.postevent)],
-    #     states={
-    #         QN1: [MessageHandler(Filters.text,
-    #                                      get_nric,
-    #                                      pass_user_data=True)],
-    #         QN2: [MessageHandler(Filters.text,
-    #                              get_nric,
-    #                              pass_user_data=True)],
-    #         QN3: [MessageHandler(Filters.text,
-    #                              get_nric,
-    #                              pass_user_data=True)]
-    #     },
-    #     fallbacks=[]
-    # )
+    # Add conversation handler with the states QN1, QN2, QN3
+    post_conv_handler = ConversationHandler(
+        entry_points=[CommandHandler('postevent', post_seminar.postevent)],
+        states={
+            QN1_END: [MessageHandler(Filters.text,
+                                     post_seminar.question1,
+                                     pass_user_data=True)],
+            QN2_END: [MessageHandler(Filters.text,
+                                     post_seminar.question2,
+                                     pass_user_data=True)],
+            QN3_END: [MessageHandler(Filters.text,
+                                     post_seminar.question3,
+                                     pass_user_data=True)],
+            ENDPOST: [MessageHandler(Filters.text,
+                                     post_seminar.endPost,
+                                     pass_user_data=True)]
+        },
+        fallbacks=[]
+    )
 
     dp.add_handler(conv_handler)
-    # dp.add_handler(post_conv_handler)
+    dp.add_handler(post_conv_handler)
     dp.add_handler(CommandHandler('stats', utils.collectStats))
-    dp.add_handler(CommandHandler('file', utils.sendFile))
+    dp.add_handler(CommandHandler('attendance', utils.sendAttendanceFile))
+    dp.add_handler(CommandHandler('feedback', utils.sendFeedbackFile))
 
     # log all errors
     dp.add_error_handler(error)
