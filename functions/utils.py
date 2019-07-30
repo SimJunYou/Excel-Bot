@@ -3,7 +3,7 @@
 
 import logging
 
-from functions.init import PERSON, rList
+from functions.init import PERSON, rList, adminID
 from functions import excel
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -37,14 +37,14 @@ Sends you the most updated Excel file for attendance.
 Feedback file - /fFile
 Sends you the most updated Excel file for feedback.
 '''
-    if update.message.chat_id == 234058962:
+    if update.message.chat_id in adminID:
         update.message.reply_text(helpText)
     else:
         update.message.reply_text("You are not recognised!")
 
 
 def attendanceStats(bot, update):
-    if update.message.chat_id == 234058962:
+    if update.message.chat_id in adminID:
         count = 0
         total = 0
         for each in PERSON:
@@ -58,7 +58,7 @@ def attendanceStats(bot, update):
 
 
 def feedbackStats(bot, update):
-    if update.message.chat_id == 234058962:
+    if update.message.chat_id in adminID:
         update.message.reply_text("Good day, admin.\nTotal replies: {}".format(rList.llen('Feedback')))
         logger.info("Admin initiates stats report.\nTotal replies: {}".format(rList.llen('Feedback')))
     else:
@@ -70,7 +70,7 @@ def chatID(bot, update):
 
 
 def sendAttendanceFile(bot, update):
-    if update.message.chat_id == 234058962:
+    if update.message.chat_id in adminID:
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest attendance")
         excel.createFile_sem()
@@ -80,7 +80,7 @@ def sendAttendanceFile(bot, update):
 
 
 def sendFeedbackFile(bot, update):
-    if update.message.chat_id == 234058962:
+    if update.message.chat_id in adminID:
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest feedback")
         excel.createFile_fb()

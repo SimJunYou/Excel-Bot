@@ -34,5 +34,7 @@ while ws['A' + str(row_number)].value is not None:
 TYPING_NRIC, ENDSEM = range(2) # for conv_handler
 QN2, QN3, ENDPOST = range(3)  # for post_conv_handler
 
+adminID = [234058962, 460007829]
 
-# MAIN VARIABLES ARE: ws, rList, PERSON, TYPING_NRIC & RESPONSE, QN1 & QN2 & QN3
+
+# MAIN VARIABLES ARE: ws, rList, PERSON, TYPING_NRIC & RESPONSE, QN1 & QN2 & QN3, adminID
