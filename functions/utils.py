@@ -3,7 +3,7 @@
 
 import logging
 
-from functions.init import PERSON
+from functions.init import PERSON, rList
 from functions import excel
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
