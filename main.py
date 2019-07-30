@@ -1,45 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
                           ConversationHandler)
 
-from openpyxl import load_workbook
-
 import logging
-import os, redis
 
+from functions.init import ws, rList, PERSON, TYPING_NRIC, RESPONSE, QN1, QN2, QN3
 from functions import excel, seminar, post_seminar, utils
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-
-
-# <EXCEL AND REDIS>
-logger.info("Opening Excel file")
-main_workbook = load_workbook('SeminarDatasheet.xlsx')
-ws = main_workbook['Sheet1']
-
-rList = redis.from_url(os.environ.get("REDIS_URL"))
-PERSON = []  # PERSON for local work, redis for heroku database
-
-excel.dumpExcel(ws)
-
-logger.info("Excel file dumped into working list and redis")
-main_workbook.save('SeminarDatasheet.xlsx')
-logger.info("Excel file closed")
-# </EXCEL AND REDIS>
-
-
-# init values for Telegram
-TYPING_NRIC, RESPONSE = range(2) # for conv_handler
-QN1, QN2, QN3 = range(3) # for post_conv_handler
-reply_keyboard = [['Yes', 'No']]
-markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
-remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 
 def error(bot, update, error):

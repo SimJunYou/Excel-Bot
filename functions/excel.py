@@ -4,24 +4,12 @@
 import logging
 from openpyxl import load_workbook
 
-from main import rList
+from functions.init import rList, ws
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
-
-
-def dumpExcel(ws):
-    row_number = 2
-    while ws['A' + str(row_number)].value is not None:
-        NRIC = ws['A' + str(row_number)].value
-        GRP_ID = ws['B' + str(row_number)].value
-        PERSON.append({'NRIC': NRIC,
-                       'GRP1': GRP_ID,
-                       'GRP1_REG': ''})
-        rList.mset({NRIC: ''})  # dump NRIC into redis
-        row_number += 1
 
 
 def findNRIC(mainlist, nric):
@@ -65,6 +53,8 @@ def createFile():
     main_workbook.save('Attendance.xlsx')
     logger.info("File creation complete")
 
+
+dumpExcel()
 
 # no longer needed due to redis
 

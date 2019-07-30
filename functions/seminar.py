@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
-from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, RegexHandler,
-                          ConversationHandler)
+from telegram.ext import ConversationHandler
 
 
-from main import PERSON, rList
+from main import PERSON, TYPING_NRIC, RESPONSE
 from functions import excel, utils
 import logging
 
@@ -14,6 +13,10 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
+
+reply_keyboard = [['Yes', 'No']]
+markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 
 def start(bot, update):
@@ -53,7 +56,7 @@ def final(bot, update, user_data):
     text = update.message.text
     if text.lower() == "yes":
         # MAIN ACTION
-        seating = excel.returnSeating(PERSON, user_data['NRIC'], rList)
+        seating = excel.returnSeating(PERSON, user_data['NRIC'])
         if seating is None:
             update.message.reply_text(
                 "We cannot find your NRIC, please look for assistance around the venue.\n\nYou may now leave this chat or type /start to register another NRIC entry",
