@@ -63,7 +63,7 @@ def createFile_fb():
     cell1, cell2, cell3 = 'A' + str(row_number), 'B' + str(row_number), 'C' + str(row_number)
 
     for index in range(0, rList.llen('Feedback')):
-        worksheet[cell1], worksheet[cell2], worksheet[cell3] = rList.lindex(index-1).decode('utf-8').split('||||')
+        worksheet[cell1], worksheet[cell2], worksheet[cell3] = rList.lindex('Feedback', index-1).decode('utf-8').split('||||')
         row_number += 1
         cell1, cell2, cell3 = 'A' + str(row_number), 'B' + str(row_number), 'C' + str(row_number)
 

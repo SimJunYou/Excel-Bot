@@ -5,7 +5,7 @@ from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
 
-from functions.init import rList, QN1_END, QN2_END, QN3_END, ENDPOST
+from functions.init import rList, QN2, QN3, ENDPOST
 import logging
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -29,27 +29,17 @@ I'm here to give you some feedback prompts and collect your feedback. You may le
 
     logger.info("User %s initiates contact", update.message.from_user.first_name)
 
-    return QN1_END
+    return QN2
 
 
-def question1(bot, update, user_data):
+def question2(bot, update, user_data):
     text = update.message.text
     user_data['Question1'] = text
     update.message.reply_text(
         "*Feedback prompt 2:*\nState and explain a segment of the seminar that was the _least_ useful for you.",
         parse_mode='Markdown')
 
-    return QN2_END
-
-
-def question2(bot, update, user_data):
-    text = update.message.text
-    user_data['Question2'] = text
-    update.message.reply_text(
-        "*Feedback prompt 3:*\nState and explain a segment of the seminar that was the _least_ useful for you.",
-        parse_mode='Markdown')
-
-    return QN3_END
+    return QN3
 
 
 def question3(bot, update, user_data):
@@ -60,7 +50,6 @@ def question3(bot, update, user_data):
         parse_mode='Markdown')
 
     return ENDPOST
-
 
 def endPost(bot, update, user_data):
     update.message.reply_text(
