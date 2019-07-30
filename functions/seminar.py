@@ -59,7 +59,7 @@ def final(bot, update, user_data):
         seating = excel.returnSeating(PERSON, user_data['NRIC'])
         if seating is None:
             update.message.reply_text(
-                "We cannot find your NRIC, please look for assistance around the venue.\n\nYou may now leave this chat or type /start to register another NRIC entry",
+                "We are unable to find your registration, kindly approach ME4A Jonathan at the back of the hall.\n\nYou may now leave this chat or type /start to register another NRIC entry",
                 reply_markup=remove)
         else:
             seating = seating.upper()
