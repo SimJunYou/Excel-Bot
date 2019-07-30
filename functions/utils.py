@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from functions.excel import returnSeating, createFile
-
 import logging
 
-from main import PERSON
+from functions.init import PERSON
 from functions import excel
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
