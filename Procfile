@@ -1,1 +1,1 @@
-worker: python seminar.py
+worker: python main.py
