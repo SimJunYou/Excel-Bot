@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 
 from functions.init import rList
 
