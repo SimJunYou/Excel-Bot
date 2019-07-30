@@ -4,7 +4,7 @@
 import logging
 from openpyxl import load_workbook
 
-from functions.init import rList, ws
+from functions.init import rList
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -53,8 +53,6 @@ def createFile():
     main_workbook.save('Attendance.xlsx')
     logger.info("File creation complete")
 
-
-dumpExcel()
 
 # no longer needed due to redis
 

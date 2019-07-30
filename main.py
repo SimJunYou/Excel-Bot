@@ -6,8 +6,8 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 
 import logging
 
-from functions.init import ws, rList, PERSON, TYPING_NRIC, RESPONSE, QN1, QN2, QN3
-from functions import excel, seminar, post_seminar, utils
+from functions.init import TYPING_NRIC, RESPONSE, QN1, QN2, QN3
+from functions import seminar, post_seminar, utils
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)

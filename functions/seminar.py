@@ -5,7 +5,7 @@ from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
 
-from main import PERSON, TYPING_NRIC, RESPONSE
+from functions.init import PERSON, TYPING_NRIC, RESPONSE
 from functions import excel, utils
 import logging
 

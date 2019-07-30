@@ -19,14 +19,15 @@ main_workbook.save('SeminarDatasheet.xlsx')
 logger.info("Excel file closed")
 
 row_number = 2
-    while ws['A' + str(row_number)].value is not None:
-        NRIC = ws['A' + str(row_number)].value
-        GRP_ID = ws['B' + str(row_number)].value
-        PERSON.append({'NRIC': NRIC,
-                       'GRP1': GRP_ID,
-                       'GRP1_REG': ''})
-        rList.mset({NRIC: ''})  # dump NRIC into redis
-        row_number += 1
+while ws['A' + str(row_number)].value is not None:
+    NRIC = ws['A' + str(row_number)].value
+    GRP_ID = ws['B' + str(row_number)].value
+    PERSON.append({'NRIC': NRIC,
+                   'GRP1': GRP_ID,
+                   'GRP1_REG': ''})
+    rList.mset({NRIC: ''})  # dump NRIC into redis
+    row_number += 1
+
 
 TYPING_NRIC, RESPONSE = range(2) # for conv_handler
 QN1, QN2, QN3 = range(3)  # for post_conv_handler
