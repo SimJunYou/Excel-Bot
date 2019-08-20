@@ -3,14 +3,17 @@
 
 import logging
 
-from functions.init import PERSON, rList, adminID
+from functions.init import PERSON, rList, adminID, ADMIN_START, ADMIN_END
 from functions import excel
+from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
+admin_reply_keyboard = [['1', '2', '3', '4'], ['5', '6', '7', '8']]
+admin_markup = ReplyKeyboardMarkup(admin_reply_keyboard, one_time_keyboard=True)
 
 #######################
 
@@ -87,4 +90,53 @@ def sendFeedbackFile(bot, update):
         bot.send_document(update.message.chat_id, document=open('Feedback.xlsx', 'rb'))
     else:
         update.message.reply_text("You are not recognised!")
+
+
+def getChatText(promptID):
+    chatText = rList.get(promptID).decode('utf-8')
+    return chatText
+
+
+def startChangeChat(bot, update):
+    if update.message.chat_id in adminID:
+        update.message.reply_text("Good day, admin. You have requested to change the chat text.")
+        logger.info("Admin requests to change chat text")
+        update.message.reply_text("Which one of the 8 text prompts do you want to change?")
+        update.message.reply_text("1. Start of attendance taking\n2. Wrong NRIC message\n3. End of attendance taking")
+        update.message.reply_text("4. Start of feedback\n5-7. Questions 1-3\n8. End of feedback",
+                                  markup=admin_markup)
+        return ADMIN_START
+    else:
+        update.message.reply_text("You are not recognised!")
+
+
+def receiveChatToChange(bot, update, user_data):
+    admin_state = update.message.text
+    if admin_state not in ['1', '2', '3', '4', '5', '6', '7', '8']:
+        update.message.reply_text("Invalid number. Please try again.")
+        return ADMIN_START
+
+    admin_state = "TEXT" + admin_state  # in rList, the key is TEXT1 for the 'Start of attendance taking' text
+    user_data["ADMIN_STATE"] = admin_state
+
+    update.message.reply_text("The following is the current message:")
+    update.message.reply_text(rList.get(admin_state))
+    if admin_state == "TEXT3":
+        update.message.reply_text("Note: type *** where the group/seat number will go in the new message.")
+    update.message.reply_text("Please type in your new message:")
+
+    return ADMIN_END
+
+
+def updateChatText(bot, update, user_data):
+    chatToChange = user_data["ADMIN_STATE"]
+    newText = update.message.text
+
+    if chatToChange == "TEXT3":
+        newText = newText.replace("***", "{}")
+
+    rList.mset({chatToChange: newText})
+    update.message.reply_text("The update is complete.")
+
+
 

@@ -31,8 +31,10 @@ while ws['A' + str(row_number)].value is not None:
     row_number += 1
 
 
-TYPING_NRIC, ENDSEM = range(2) # for conv_handler
+TYPING_NRIC, ENDSEM = range(2)  # for conv_handler
 QN2, QN3, ENDPOST = range(3)  # for post_conv_handler
+ADMIN_START, ADMIN_END = range(2)  # for admin_handler
+
 
 adminID = [234058962, 460007829]
 

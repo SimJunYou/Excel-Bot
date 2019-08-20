@@ -4,7 +4,6 @@
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
-
 from functions.init import PERSON, TYPING_NRIC, ENDSEM
 from functions import excel, utils
 import logging
@@ -20,13 +19,8 @@ remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 
 def start(bot, update):
-    update.message.reply_text(
-        ''' _Welcome to the Redesign Seminar!_
-*============================*
-I'm here to mark your attendance and provide your assigned group. You may leave this chat at any time, it will not affect the bot.
-
-Please enter the _last 5 characters_ of your NRIC:''',
-        parse_mode='Markdown')
+    update.message.reply_text(utils.getChatText('TEXT1'),
+                              parse_mode='Markdown')
 
     logger.info("User %s initiates contact", update.message.from_user.first_name)
 
@@ -58,17 +52,12 @@ def final(bot, update, user_data):
         # MAIN ACTION
         seating = excel.returnSeating(PERSON, user_data['NRIC'])
         if seating is None:
-            update.message.reply_text(
-                "We are unable to find your registration, kindly approach ME4A Jonathan at the back of the hall.\n\nYou may now leave this chat or type /start to register another NRIC entry",
-                reply_markup=remove)
+            update.message.reply_text(utils.getChatText("TEXT2"), reply_markup=remove)
         else:
             seating = seating.upper()
-            update.message.reply_text(
-                '''Your assigned group is: {}.\n\nThank you for attending this seminar! You may now leave this chat or type /start to register another NRIC entry.'''.format(
-                    seating),
-                reply_markup=remove)
+            update.message.reply_text(utils.getChatText("TEXT3").format(seating), reply_markup=remove)
     elif text.lower() == "no":
-        update.message.reply_text("Let's try again. Enter the last 5 digits of your NRIC:", reply_markup = remove)
+        update.message.reply_text("Let's try again. Enter the last 5 digits of your NRIC:", reply_markup=remove)
         return TYPING_NRIC
 
     logger.info("User {} completes".format(update.message.from_user.first_name))

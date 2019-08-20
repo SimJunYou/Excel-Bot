@@ -6,7 +6,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 
 import logging
 
-from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST
+from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST, ADMIN_START, ADMIN_END
 from functions import seminar, post_seminar, utils
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -54,6 +54,20 @@ def main():
             ENDPOST: [MessageHandler(Filters.text,
                                      post_seminar.endPost,
                                      pass_user_data=True)]
+        },
+        fallbacks=[]
+    )
+
+    # Add conversation handler with the state ADMIN_START
+    admin_handler = ConversationHandler(
+        entry_points=[CommandHandler('changetext', utils.startChangeChat())],
+        states={
+            ADMIN_START: [MessageHandler(Filters.text,
+                                         utils.receiveChatToChange,
+                                         pass_user_data=True)],
+            ADMIN_END: [MessageHandler(Filters.text,
+                                       utils.updateChatText(),
+                                       pass_user_data=True)]
         },
         fallbacks=[]
     )
