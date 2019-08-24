@@ -172,6 +172,9 @@ def startNewAdmin(bot, update):
     updateMessage = "Good day, admin. You have requested to add a new admin. " \
                     "Please send me his/her contact so that I can register them in the system."
 
+    logger.info(update.message.from_user.id)
+    logger.info(getAdminID())
+
     if update.message.from_user.id in getAdminID():
         logger.info("Admin requests to add new admin")
         update.message.reply_text(updateMessage)
