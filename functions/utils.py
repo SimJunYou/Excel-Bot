@@ -214,7 +214,7 @@ def removeAdmin(bot, update, args):
     removed = False
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin Info')):
-            current = rList.lindex('Admin Info', i)
+            current = rList.lindex('Admin Info', i).decode('utf-8')
             if searchName in current:
                 removed = current
                 rList.lrem('Admin List', i)
