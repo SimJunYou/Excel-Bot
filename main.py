@@ -74,11 +74,10 @@ def main():
 
     # Add conversation handler with the state NEW_ADMIN_END
     admin_handler = ConversationHandler(
-        entry_points=[CommandHandler('newAdmin', utils.startNewAdmin, pass_user_data=True)],
+        entry_points=[CommandHandler('newAdmin', utils.startNewAdmin)],
         states={
             NEW_ADMIN: [MessageHandler(Filters.contact,
-                                       utils.addNewAdmin,
-                                       pass_user_data=True)]
+                                       utils.addNewAdmin)]
         },
         fallbacks=[]
     )
