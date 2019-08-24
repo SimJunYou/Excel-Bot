@@ -14,8 +14,6 @@ ws = main_workbook['Sheet1']
 
 rList = redis.from_url(os.environ.get("REDIS_URL"))
 rList.delete('Feedback')  # clearing feedback from tests
-rList.delete('Admin Info')
-rList.delete('Admin List')
 
 
 PERSON = []  # PERSON for local work, redis for heroku database
@@ -42,5 +40,6 @@ QN2, QN3, ENDPOST = range(3)  # for post_conv_handler
 ADMIN_START, ADMIN_END = range(2)  # for admin_handler
 NEW_ADMIN = range(1)  # for new_admin_handler
 
+rList.lpush("Admin List", 234058962)
 
 # MAIN VARIABLES ARE: ws, rList, PERSON, TYPING_NRIC & RESPONSE, QN1 & QN2 & QN3, adminID

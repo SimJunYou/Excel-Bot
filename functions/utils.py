@@ -189,7 +189,7 @@ def addNewAdmin(bot, update):
     userName = update.effective_message.contact.first_name
     userPhone = update.effective_message.contact.phone_number
 
-    logger.info(userID, userName, userPhone)
+    logger.info("New admin: " + str(userID) + " " + userName + " " + str(userPhone))
     rList.lpush('Admin List', userID)
     rList.lpush('Admin Info', userName+": "+userPhone)
 
