@@ -186,6 +186,7 @@ def addNewAdmin(bot, update):
     userName = update.effective_message.contact.first_name
     userPhone = update.effective_message.contact.phone_number
 
+    logger.info(userID, userName, userPhone)
     rList.lpush('Admin List', userID)
     rList.lpush('Admin Info', userName+": "+userPhone)
 
@@ -213,7 +214,8 @@ def removeAdmin(bot, update, args):
             current = rList.lindex('Admin Info', i)
             if searchName in current:
                 removed = current
-                rList.lrem(i)
+                rList.lrem('Admin List', i)
+                rList.lrem('Admin Info', i)
             break
 
     removedName, removedPhone = removed.split(": ")
