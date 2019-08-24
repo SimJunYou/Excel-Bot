@@ -74,6 +74,7 @@ def main():
 
     dp.add_handler(conv_handler)
     dp.add_handler(post_conv_handler)
+    dp.add_handler(admin_handler)
     dp.add_handler(CommandHandler('help', utils.adminHelp))
     dp.add_handler(CommandHandler('id', utils.chatID))
     dp.add_handler(CommandHandler('aStats', utils.attendanceStats))
