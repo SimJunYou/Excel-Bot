@@ -171,13 +171,13 @@ def startNewAdmin(bot, update):
     updateMessage = "Good day, admin. You have requested to add a new admin. " \
                     "Please send me his/her contact so that I can register them in the system."
 
-    if update.message.from_user.id in getAdminID():
-        logger.info("Admin requests to add new admin")
-        update.message.reply_text(updateMessage)
-        return NEW_ADMIN
-    else:
-        update.message.reply_text("You are not recognised!")
-        return ConversationHandler.END
+    # if update.message.from_user.id in getAdminID():
+    logger.info("Admin requests to add new admin")
+    update.message.reply_text(updateMessage)
+    return NEW_ADMIN
+    # else:
+    #     update.message.reply_text("You are not recognised!")
+    #     return ConversationHandler.END
 
 
 def addNewAdmin(bot, update):
@@ -196,12 +196,12 @@ def addNewAdmin(bot, update):
 
 def listAllAdmins(bot, update):
     adminList = ""
-    if update.message.from_user.id in getAdminID():
-        for i in range(rList.llen('Admin Info')):
-            adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"
-        update.message.reply_text(adminList)
-    else:
-        update.message.reply_text("You are not recognised!")
+    # if update.message.from_user.id in getAdminID():
+    for i in range(rList.llen('Admin Info')):
+        adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"
+    update.message.reply_text(adminList)
+    # else:
+    #     update.message.reply_text("You are not recognised!")
 
 
 def removeAdmin(bot, update, args):

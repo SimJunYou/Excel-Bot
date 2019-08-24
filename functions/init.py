@@ -11,8 +11,6 @@ logger.info("Opening Excel file")
 main_workbook = load_workbook('SeminarDatasheet.xlsx')
 ws = main_workbook['Sheet1']
 
-logger.info(os.environ.get("REDIS_URL"))
-
 rList = redis.from_url(os.environ.get("REDIS_URL"))
 rList.delete('Feedback')  # clearing feedback from tests
 
