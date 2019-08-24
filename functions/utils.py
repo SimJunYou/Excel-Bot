@@ -193,10 +193,13 @@ def addNewAdmin(bot, update):
 
 
 def deleteAllAdmins(bot, update):
-    rList.delete('Admin List')
-    rList.lpush('Admin List', "234058962|JunYou|+6584687298")
-    logger.info("Deleted all admins except JunYou")
-    update.message.reply_text("Deleted all admins except JunYOu")
+    if update.message.from_user.id in getAdminID():
+        rList.delete('Admin List')
+        rList.lpush('Admin List', "234058962|JunYou|+6584687298")
+        logger.info("Deleted all admins except JunYou")
+        update.message.reply_text("Deleted all admins except JunYOu")
+    else:
+        update.message.reply_text("You are not recognised!")
 
 
 def listAllAdmins(bot, update):
