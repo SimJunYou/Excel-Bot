@@ -37,7 +37,7 @@ ADMIN_START, ADMIN_END = range(2)  # for admin_handler
 NEW_ADMIN = range(1)  # for new_admin_handler
 
 # initialise Admin List if not already done
-if not rList.lindex("Admin List"):
+if not rList.lindex("Admin List", 0):
     rList.lpush('Admin List', 234058962)
 
 
