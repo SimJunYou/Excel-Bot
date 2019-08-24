@@ -59,7 +59,7 @@ Shows you all the current admins and their phone numbers.
 Remove an admin - /removeAdmin
 Lets you remove an admin.
 '''
-    if update.message.from_user.id == getAdminID():
+    if update.message.from_user.id in getAdminID():
         update.message.reply_text(helpText)
     else:
         update.message.reply_text("You are not recognised!")
