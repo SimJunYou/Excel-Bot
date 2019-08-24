@@ -60,7 +60,7 @@ def main():
 
     # Add conversation handler with the state ADMIN_START
     admin_handler = ConversationHandler(
-        entry_points=[CommandHandler('changetext', utils.startChangeChat, pass_user_data=True, pass_args=True)],
+        entry_points=[CommandHandler('changeText', utils.startChangeChat, pass_user_data=True, pass_args=True)],
         states={
             ADMIN_START: [MessageHandler(Filters.text,
                                          utils.receiveChatToChange,
@@ -81,7 +81,7 @@ def main():
     dp.add_handler(CommandHandler('fStats', utils.feedbackStats))
     dp.add_handler(CommandHandler('aFile', utils.sendAttendanceFile))
     dp.add_handler(CommandHandler('fFile', utils.sendFeedbackFile))
-    dp.add_handler(CommandHandler('newAdmin', utils.addNewAdmin()))
+    dp.add_handler(CommandHandler('newAdmin', utils.addNewAdmin))
 
     # log all errors
     dp.add_error_handler(error)
