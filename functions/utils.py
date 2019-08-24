@@ -88,7 +88,7 @@ def feedbackStats(bot, update):
 
 def chatID(bot, update):
     update.message.reply_text(update.message.chat_id)
-    update.message.reply_text(update.message.from_user)
+    update.message.reply_text(update.message.from_user.id)
 
     adminList = []
     for i in range(rList.llen('Admin List')):
