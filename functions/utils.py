@@ -31,7 +31,7 @@ def getAdminID():
     adminList = []
     for i in range(rList.llen('Admin List')):
         adminID = rList.lindex('Admin List', i).decode('utf-8')
-        adminList.append(str(adminID))
+        adminList.append(int(adminID))
     return adminList
 
 
