@@ -6,7 +6,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 
 import logging
 
-from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST, ADMIN_START, ADMIN_END
+from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST, ADMIN_START, ADMIN_END, NEW_ADMIN
 from functions import seminar, post_seminar, utils
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -58,7 +58,7 @@ def main():
         fallbacks=[]
     )
 
-    # Add conversation handler with the state ADMIN_START
+    # Add conversation handler with the states ADMIN_START, ADMIN_END
     admin_handler = ConversationHandler(
         entry_points=[CommandHandler('changeText', utils.startChangeChat, pass_user_data=True, pass_args=True)],
         states={
@@ -67,6 +67,17 @@ def main():
                                          pass_user_data=True)],
             ADMIN_END: [MessageHandler(Filters.text,
                                        utils.updateChatText,
+                                       pass_user_data=True)]
+        },
+        fallbacks=[]
+    )
+
+    # Add conversation handler with the state NEW_ADMIN_END
+    admin_handler = ConversationHandler(
+        entry_points=[CommandHandler('newAdmin', utils.startNewAdmin, pass_user_data=True)],
+        states={
+            NEW_ADMIN: [MessageHandler(Filters.contact,
+                                       utils.addNewAdmin,
                                        pass_user_data=True)]
         },
         fallbacks=[]
@@ -81,7 +92,7 @@ def main():
     dp.add_handler(CommandHandler('fStats', utils.feedbackStats))
     dp.add_handler(CommandHandler('aFile', utils.sendAttendanceFile))
     dp.add_handler(CommandHandler('fFile', utils.sendFeedbackFile))
-    dp.add_handler(CommandHandler('newAdmin', utils.addNewAdmin))
+    dp.add_handler(CommandHandler('listAdmins', utils.listAllAdmins))
 
     # log all errors
     dp.add_error_handler(error)

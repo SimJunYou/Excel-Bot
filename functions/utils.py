@@ -3,7 +3,7 @@
 
 import logging
 
-from functions.init import PERSON, rList, adminID, ADMIN_START, ADMIN_END
+from functions.init import PERSON, rList, adminID, ADMIN_START, ADMIN_END, NEW_ADMIN
 from functions import excel
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
@@ -27,6 +27,13 @@ def validate_nric(nric):
     return False
 
 
+def getAdminID():
+    adminList = []
+    for i in range(rList.llen('Admin List')):
+        adminList.append(rList.lindex('Admin List', i))
+    return adminList
+
+
 def adminHelp(bot, update):
     helpText = '''AVAILABLE COMMANDS:
     
@@ -42,14 +49,14 @@ Sends you the most updated Excel file for attendance.
 Feedback file - /fFile
 Sends you the most updated Excel file for feedback.
 '''
-    if update.message.chat_id in adminID:
+    if update.message.from_user in getAdminID():
         update.message.reply_text(helpText)
     else:
         update.message.reply_text("You are not recognised!")
 
 
 def attendanceStats(bot, update):
-    if update.message.chat_id in adminID:
+    if update.message.from_user in getAdminID():
         count = 0
         total = 0
         for each in PERSON:
@@ -63,7 +70,7 @@ def attendanceStats(bot, update):
 
 
 def feedbackStats(bot, update):
-    if update.message.chat_id in adminID:
+    if update.message.from_user in getAdminID():
         update.message.reply_text("Good day, admin.\nTotal replies: {}".format(rList.llen('Feedback')))
         logger.info("Admin initiates stats report.\nTotal replies: {}".format(rList.llen('Feedback')))
     else:
@@ -75,7 +82,7 @@ def chatID(bot, update):
 
 
 def sendAttendanceFile(bot, update):
-    if update.message.chat_id in adminID:
+    if update.message.from_user in getAdminID():
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest attendance")
         excel.createFile_sem()
@@ -85,7 +92,7 @@ def sendAttendanceFile(bot, update):
 
 
 def sendFeedbackFile(bot, update):
-    if update.message.chat_id in adminID:
+    if update.message.from_user in getAdminID():
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest feedback")
         excel.createFile_fb()
@@ -105,7 +112,7 @@ def startChangeChat(bot, update, user_data, args):
                     "1. Start of attendance taking\n2. Wrong NRIC message\n3. End of attendance taking\n"\
                     "4. Start of feedback\n5-7. Questions 1-3\n8. End of feedback"
 
-    if update.message.chat_id in adminID:
+    if update.message.from_user in getAdminID():
         logger.info("Admin requests to change chat text")
         if not args:  # if arguments have not been passed, send update message and go to ADMIN_START
             update.message.reply_text(updateMessage, markup=admin_markup)
@@ -145,9 +152,36 @@ def updateChatText(bot, update, user_data):
     return ConversationHandler.END
 
 
-def addNewAdmin(bot, update):
-    user = update.message.from_user
-    update.message.reply_text(user.id)
+def startNewAdmin(bot, update):
+    updateMessage = "Good day, admin. You have requested to add a new admin. " \
+                    "Please send me his/her contact so that I can register them in the system."
 
+    if update.message.from_user in getAdminID():
+        logger.info("Admin requests to add new admin")
+        update.message.reply_text(updateMessage)
+        return NEW_ADMIN
+    else:
+        update.message.reply_text("You are not recognised!")
+        return ConversationHandler.END
+
+
+def addNewAdmin(bot, update):
+    userID = update.effective_message.contact.user_id
+    userName = update.effective_message.contact.first_name
+    userPhone = update.effective_message.contact.phone_number
+    rList.lpush('Admin List', userID)
+    rList.lpush('Admin Info', userName+": "+userPhone)
+    logger.info("New admin {} has been added.".append(userName))
+    return ConversationHandler.END
+
+
+def listAllAdmins(bot, update):
+    adminList = ""
+    if update.message.from_user in getAdminID():
+        for i in range(rList.llen('Admin Name')):
+            adminList += rList.lindex('Admin Info', i) + "\n"
+        update.message.reply_text(adminList)
+    else:
+        update.message.reply_text("You are not recognised!")
 
 
