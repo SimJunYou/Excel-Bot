@@ -30,8 +30,8 @@ def validate_nric(nric):
 def getAdminID():
     adminList = []
     for i in range(rList.llen('Admin List')):
-        adminID = rList.lindex('Admin List', i)
-        logger.info(adminID)
+        adminID = rList.lindex('Admin List', i).decode('utf-8')
+        logger.info(str(adminID))
         adminList.append(str(adminID))
     return adminList
 
