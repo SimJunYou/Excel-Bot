@@ -112,7 +112,7 @@ def startChangeChat(bot, update, user_data, args):
             return ADMIN_START
         else:
             # if arguments have been passed, pass arguments into receiveChatToChange
-            return receiveChatToChange(bot, update, user_data, args)  # go straight to ADMIN_END or back to ADMIN_START
+            return receiveChatToChange(bot, update, user_data, args[0])  # go straight to ADMIN_END or back to ADMIN_START
     else:
         update.message.reply_text("You are not recognised!")
 
