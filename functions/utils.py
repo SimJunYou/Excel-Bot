@@ -194,24 +194,18 @@ def addNewAdmin(bot, update):
 
 def listAllAdmins(bot, update):
     adminList = ""
-    logger.info("0")
+
     if update.message.from_user.id in getAdminID():
-        logger.info("1")
         for i in range(rList.llen('Admin List')):
-            logger.info("2")
             adminInfo = rList.lindex('Admin List', i).decode('utf-8').split("|")
-            logger.info("3")
             adminList += ": ".join(adminInfo[1:2]) + "\n"  # search, decode, split, slice, join, and concatenate
 
-        logger.info("4")
         if adminList != "":
-            logger.info("5")
+            logger.info(adminList)
             update.message.reply_text(adminList)  # send the complete list
         else:
-            logger.info("6")
             update.message.reply_text("There are no admins")
     else:
-        logger.info("7")
         update.message.reply_text("You are not recognised!")
 
 
