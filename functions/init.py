@@ -36,11 +36,9 @@ QN2, QN3, ENDPOST = range(3)  # for post_conv_handler
 ADMIN_START, ADMIN_END = range(2)  # for admin_handler
 NEW_ADMIN = range(1)  # for new_admin_handler
 
-adminID = [234058962, 460007829]
-
-# # initialise ADMIN_LIST if not already done
-# if not rList.get("ADMIN_LIST"):
-#     rList.mset({"ADMIN_LIST": [234058962, 460007829]})
+# initialise Admin List if not already done
+if not rList.lindex("Admin List"):
+    rList.lpush('Admin List', 234058962)
 
 
 # MAIN VARIABLES ARE: ws, rList, PERSON, TYPING_NRIC & RESPONSE, QN1 & QN2 & QN3, adminID

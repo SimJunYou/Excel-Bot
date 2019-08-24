@@ -3,7 +3,7 @@
 
 import logging
 
-from functions.init import PERSON, rList, adminID, ADMIN_START, ADMIN_END, NEW_ADMIN
+from functions.init import PERSON, rList, ADMIN_START, ADMIN_END, NEW_ADMIN
 from functions import excel
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
@@ -48,6 +48,15 @@ Sends you the most updated Excel file for attendance.
 
 Feedback file - /fFile
 Sends you the most updated Excel file for feedback.
+
+Add new admin - /newAdmin
+Lets you add a new admin by sending their contact to the bot.
+
+List all admins - /listAdmins
+Shows you all the current admins and their phone numbers.
+
+Remove an admin - /removeAdmin
+Lets you remove an admin.
 '''
     if update.message.from_user in getAdminID():
         update.message.reply_text(helpText)
@@ -169,9 +178,13 @@ def addNewAdmin(bot, update):
     userID = update.effective_message.contact.user_id
     userName = update.effective_message.contact.first_name
     userPhone = update.effective_message.contact.phone_number
+
     rList.lpush('Admin List', userID)
     rList.lpush('Admin Info', userName+": "+userPhone)
-    logger.info("New admin {} has been added.".append(userName))
+
+    logger.info("New admin {} has been added.".format(userName))
+    update.message.reply_text("New admin {} has been added.".format(userName))
+
     return ConversationHandler.END
 
 
@@ -183,5 +196,22 @@ def listAllAdmins(bot, update):
         update.message.reply_text(adminList)
     else:
         update.message.reply_text("You are not recognised!")
+
+
+def removeAdmin(bot, update, args):
+    searchName = args.join(" ")
+    removed = False
+    if update.message.from_user == 234058962:
+        for i in range(rList.llen('Admin Info')):
+            current = rList.lindex('Admin Info', i)
+            if searchName in current:
+                removed = current
+                rList.lrem(i)
+            break
+
+    removedName, removedPhone = removed.split(": ")
+    logger.info("Admin {} (p/h: {}) has been removed.".format(removedName, removedPhone))
+    update.message.reply_text("Admin {} (p/h: {}) has been removed".format(removedName, removedPhone))
+
 
 
