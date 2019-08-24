@@ -30,7 +30,8 @@ def validate_nric(nric):
 def getAdminID():
     adminList = []
     for i in range(rList.llen('Admin List')):
-        adminList.append(rList.lindex('Admin List', i).decode('utf-8'))
+        adminID = rList.lindex('Admin List', i).decode('utf-8')
+        adminList.append(str(adminID))
     return adminList
 
 
@@ -185,7 +186,7 @@ def addNewAdmin(bot, update):
     userName = update.effective_message.contact.first_name
     userPhone = update.effective_message.contact.phone_number
 
-    rList.lpush('Admin List', str(userID))
+    rList.lpush('Admin List', userID)
     rList.lpush('Admin Info', userName+": "+userPhone)
 
     logger.info("New admin {} has been added.".format(userName))
@@ -205,7 +206,7 @@ def listAllAdmins(bot, update):
 
 
 def removeAdmin(bot, update, args):
-    searchName = args.join(" ")
+    searchName = " ".join(args)
     removed = False
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin Info')):
