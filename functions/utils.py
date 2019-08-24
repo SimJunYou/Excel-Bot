@@ -198,7 +198,11 @@ def listAllAdmins(bot, update):
         for i in range(rList.llen('Admin List')):
             adminInfo = rList.lindex('Admin List', i).decode('utf-8').split("|")
             adminList += ": ".join(adminInfo[1:2]) + "\n"  # search, decode, split, slice, join, and concatenate
-        update.message.reply_text(adminList)  # send the complete list
+
+        if adminList != "":
+            update.message.reply_text(adminList)  # send the complete list
+        else:
+            update.message.reply_text("There are no admins")
     else:
         update.message.reply_text("You are not recognised!")
 
