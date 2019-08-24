@@ -30,7 +30,7 @@ def validate_nric(nric):
 def getAdminID():
     adminList = []
     for i in range(rList.llen('Admin List')):
-        adminList.append(rList.lindex('Admin List', i))
+        adminList.append(rList.lindex('Admin List', i).decode('utf-8'))
     return adminList
 
 
@@ -58,14 +58,14 @@ Shows you all the current admins and their phone numbers.
 Remove an admin - /removeAdmin
 Lets you remove an admin.
 '''
-    if update.message.from_user in getAdminID():
+    if update.message.from_user.id in getAdminID():
         update.message.reply_text(helpText)
     else:
         update.message.reply_text("You are not recognised!")
 
 
 def attendanceStats(bot, update):
-    if update.message.from_user in getAdminID():
+    if update.message.from_user.id in getAdminID():
         count = 0
         total = 0
         for each in PERSON:
@@ -79,7 +79,7 @@ def attendanceStats(bot, update):
 
 
 def feedbackStats(bot, update):
-    if update.message.from_user in getAdminID():
+    if update.message.from_user.id in getAdminID():
         update.message.reply_text("Good day, admin.\nTotal replies: {}".format(rList.llen('Feedback')))
         logger.info("Admin initiates stats report.\nTotal replies: {}".format(rList.llen('Feedback')))
     else:
@@ -117,7 +117,7 @@ def sendFeedbackFile(bot, update):
 
 
 def getChatText(promptID):
-    chatText = rList.get(promptID).decode('utf-8')
+    chatText = rList.get(promptID)
     return chatText
 
 
@@ -185,7 +185,7 @@ def addNewAdmin(bot, update):
     userName = update.effective_message.contact.first_name
     userPhone = update.effective_message.contact.phone_number
 
-    rList.lpush('Admin List', userID)
+    rList.lpush('Admin List', str(userID))
     rList.lpush('Admin Info', userName+": "+userPhone)
 
     logger.info("New admin {} has been added.".format(userName))
