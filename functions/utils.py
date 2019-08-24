@@ -92,7 +92,7 @@ def chatID(bot, update):
 
     adminList = []
     for i in range(rList.llen('Admin List')):
-        adminList += rList.lindex('Admin List', i) + "\n"
+        adminList += rList.lindex('Admin List', i).decode('utf-8') + "\n"
     update.message.reply_text(adminList)
 
 
@@ -198,7 +198,7 @@ def listAllAdmins(bot, update):
     adminList = ""
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin Info')):
-            adminList += rList.lindex('Admin Info', i) + "\n"
+            adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"
         update.message.reply_text(adminList)
     else:
         update.message.reply_text("You are not recognised!")
