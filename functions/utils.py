@@ -122,7 +122,7 @@ def receiveChatToChange(bot, update, user_data):
     user_data["ADMIN_STATE"] = admin_state
 
     update.message.reply_text("The following is the current message:", reply_markup=remove)
-    update.message.reply_text(rList.get(admin_state).decode('utf-8'))
+    update.message.reply_text(rList.get(admin_state).decode('utf-8'), parse_mode='Markdown')
     if admin_state == "TEXT3":
         update.message.reply_text("Note: type *** where the group/seat number will go in the new message.")
     update.message.reply_text("Please type in your new message:")

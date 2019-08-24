@@ -4,19 +4,41 @@ I'm here to mark your attendance and provide your assigned group. You may leave 
 
 Please enter the _last 5 characters_ of your NRIC:
 
+-------------------------------
 
-We are unable to find your registration, kindly approach ME4A Jonathan at the back of the hall.\n\nYou may now leave this chat or type /start to register another NRIC entry
+We are unable to find your registration, kindly approach ME4A Jonathan at the back of the hall.
 
-Your assigned group is: {}.\n\nThank you for attending this seminar! You may now leave this chat or type /start to register another NRIC entry.
+You may now leave this chat or type /start to register another NRIC entry.
+
+-------------------------------
+
+Your assigned group is: ***.
+
+Thank you for attending this seminar! You may now leave this chat or type /start to register another NRIC entry.
+
+-------------------------------
 
 _Redesign Seminar Feedback_
 *============================*
 I'm here to give you some feedback prompts and collect your feedback. You may leave this chat at any time, it will not affect the bot.
 
-"*Feedback prompt 1:*\nState and explain a segment of the seminar that was the most useful for you."
+-------------------------------
 
-"*Feedback prompt 2:*\nState and explain a segment of the seminar that was the _least_ useful for you."
+*Feedback prompt 1:*
+State and explain a segment of the seminar that was the most useful for you.
 
-"*Feedback prompt 3:*\nAny other comments? *Please leave your name* if you want us to get back to you."
+-------------------------------
 
-"*Thank you for the feedback!*\nYou may now leave this chat."
+*Feedback prompt 2:*
+State and explain a segment of the seminar that was the _least_ useful for you.
+
+-------------------------------
+
+*Feedback prompt 3:*
+Any other comments? *Please leave your name* if you want us to get back to you.
+
+-------------------------------
+
+*Thank you for the feedback!*
+
+You may now leave this chat.
