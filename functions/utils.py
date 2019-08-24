@@ -88,6 +88,12 @@ def feedbackStats(bot, update):
 
 def chatID(bot, update):
     update.message.reply_text(update.message.chat_id)
+    update.message.reply_text(update.message.from_user)
+
+    adminList = []
+    for i in range(rList.llen('Admin List')):
+        adminList += rList.lindex('Admin List', i) + "\n"
+    update.message.reply_text(adminList)
 
 
 def sendAttendanceFile(bot, update):
@@ -191,7 +197,7 @@ def addNewAdmin(bot, update):
 def listAllAdmins(bot, update):
     adminList = ""
     if update.message.from_user in getAdminID():
-        for i in range(rList.llen('Admin Name')):
+        for i in range(rList.llen('Admin Info')):
             adminList += rList.lindex('Admin Info', i) + "\n"
         update.message.reply_text(adminList)
     else:
