@@ -115,6 +115,7 @@ def startChangeChat(bot, update, user_data, args):
             return receiveChatToChange(bot, update, user_data, args[0])  # go straight to ADMIN_END or back to ADMIN_START
     else:
         update.message.reply_text("You are not recognised!")
+        return ConversationHandler.END
 
 
 def receiveChatToChange(bot, update, user_data, admin_state='0'):
