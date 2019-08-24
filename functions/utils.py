@@ -31,7 +31,7 @@ def getAdminID():
     adminList = []
     for i in range(rList.llen('Admin List')):
         adminID = rList.lindex('Admin List', i).decode('utf-8')
-        adminList.append(str(adminID))
+        adminList.append(adminID)
     return adminList
 
 
@@ -93,7 +93,7 @@ def chatID(bot, update):
 
     adminList = []
     for i in range(rList.llen('Admin List')):
-        adminList += rList.lindex('Admin List', i).decode('utf-8') + "\n"
+        adminList.append(rList.lindex('Admin List', i).decode('utf-8'))
     update.message.reply_text(adminList)
 
 
