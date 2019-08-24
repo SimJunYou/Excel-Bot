@@ -60,7 +60,7 @@ def main():
 
     # Add conversation handler with the state ADMIN_START
     admin_handler = ConversationHandler(
-        entry_points=[CommandHandler('changetext', utils.startChangeChat)],
+        entry_points=[CommandHandler('changetext', utils.startChangeChat, pass_user_data=True, pass_args=True)],
         states={
             ADMIN_START: [MessageHandler(Filters.text,
                                          utils.receiveChatToChange,
