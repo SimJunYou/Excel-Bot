@@ -105,7 +105,6 @@ def startChangeChat(bot, update):
                     "1. Start of attendance taking\n2. Wrong NRIC message\n3. End of attendance taking\n"\
                     "4. Start of feedback\n5-7. Questions 1-3\n8. End of feedback"
     if update.message.chat_id in adminID:
-        update.message.reply_text()
         logger.info("Admin requests to change chat text")
         update.message.reply_text(updateMessage, markup=admin_markup)
         return ADMIN_START
