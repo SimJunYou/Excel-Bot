@@ -222,9 +222,10 @@ def removeAdmin(bot, update, args):
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin List')):
             current = rList.lindex('Admin List', i).decode('utf-8')
-            if searchName in current:  # if the name is found
+            if searchName.lower() in current.lower():  # if the name is found
                 removed = current
-                rList.lrem('Admin List', 1, current)  # remove one object with same name, searching from head
+                if searchName != "JunYou":
+                    rList.lrem('Admin List', 1, current)  # remove one object with same name, searching from head
             break
 
     if not removed:
