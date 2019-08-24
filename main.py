@@ -66,7 +66,7 @@ def main():
                                          utils.receiveChatToChange,
                                          pass_user_data=True)],
             ADMIN_END: [MessageHandler(Filters.text,
-                                       utils.updateChatText(),
+                                       utils.updateChatText,
                                        pass_user_data=True)]
         },
         fallbacks=[]
