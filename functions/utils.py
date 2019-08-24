@@ -30,7 +30,8 @@ def validate_nric(nric):
 def getAdminID():
     adminList = []
     for i in range(rList.llen('Admin List')):
-        adminID = rList.lindex('Admin List', i).decode('utf-8')
+        adminInfo = rList.lindex('Admin List', i).decode('utf-8').split("|")
+        adminID = adminInfo[0]
         adminList.append(int(adminID))
     return adminList
 
@@ -88,13 +89,7 @@ def feedbackStats(bot, update):
 
 
 def chatID(bot, update):
-    update.message.reply_text(update.message.chat_id)
     update.message.reply_text(update.message.from_user.id)
-
-    adminList = []
-    for i in range(rList.llen('Admin List')):
-        adminList.append(rList.lindex('Admin List', i).decode('utf-8'))
-    update.message.reply_text(adminList)
 
 
 def sendAttendanceFile(bot, update):
@@ -188,8 +183,8 @@ def addNewAdmin(bot, update):
     userPhone = update.effective_message.contact.phone_number
 
     logger.info("New admin: " + str(userID) + " " + userName + " " + str(userPhone))
-    rList.lpush('Admin List', userID)  # admin list holds all admin user IDs
-    rList.lpush('Admin Info', userName+": "+userPhone)  # admin info holds all admin names + phone numbers
+    # admin list holds all admin ids + admin names + phone numbers
+    rList.lpush('Admin List', userID + "|" + userName + "|" + userPhone)
 
     logger.info("New admin {} has been added.".format(userName))
     update.message.reply_text("New admin {} has been added.".format(userName))
@@ -200,8 +195,9 @@ def addNewAdmin(bot, update):
 def listAllAdmins(bot, update):
     adminList = ""
     if update.message.from_user.id in getAdminID():
-        for i in range(rList.llen('Admin Info')):
-            adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"  # search, decode, and concatenate
+        for i in range(rList.llen('Admin List')):
+            adminInfo = rList.lindex('Admin List', i).decode('utf-8').split("|")
+            adminList += ": ".join(adminInfo[1:2]) + "\n"  # search, decode, split, slice, join, and concatenate
         update.message.reply_text(adminList)  # send the complete list
     else:
         update.message.reply_text("You are not recognised!")
@@ -211,18 +207,17 @@ def removeAdmin(bot, update, args):
     searchName = " ".join(args)  # if first name has space, put it together into one searchName
     removed = False
     if update.message.from_user.id in getAdminID():
-        for i in range(rList.llen('Admin Info')):
-            current = rList.lindex('Admin Info', i).decode('utf-8')
+        for i in range(rList.llen('Admin List')):
+            current = rList.lindex('Admin List', i).decode('utf-8')
             if searchName in current:  # if the name is found
                 removed = current
-                rList.lrem('Admin List', 1, i)  # remove one object with same name, searching from head
-                rList.lrem('Admin Info', 1, i)  # same as above
+                rList.lrem('Admin List', 1, current)  # remove one object with same name, searching from head
             break
 
     if not removed:
         update.message.reply_text("Admin {} not found".format(searchName))
     else:
-        removedName, removedPhone = removed.split(": ")
+        removedName, removedPhone = removed.split("|")[1:]
         logger.info("Admin {} (p/h: {}) has been removed.".format(removedName, removedPhone))
         update.message.reply_text("Admin {} (p/h: {}) has been removed".format(removedName, removedPhone))
 
