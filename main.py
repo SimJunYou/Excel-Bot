@@ -92,6 +92,7 @@ def main():
     dp.add_handler(CommandHandler('aFile', utils.sendAttendanceFile))
     dp.add_handler(CommandHandler('fFile', utils.sendFeedbackFile))
     dp.add_handler(CommandHandler('listAdmins', utils.listAllAdmins))
+    dp.add_handler(CommandHandler('deleteAll', utils.deleteAllAdmins))
     dp.add_handler(CommandHandler('removeAdmin', utils.removeAdmin, pass_args=True))
 
     # log all errors

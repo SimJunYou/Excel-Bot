@@ -192,14 +192,20 @@ def addNewAdmin(bot, update):
     return ConversationHandler.END
 
 
+def deleteAllAdmins(bot, update):
+    rList.delete('Admin List')
+    rList.lpush('Admin List', "234058962|JunYou|+6584687298")
+    logger.info("Deleted all admins except JunYou")
+    update.message.reply_text("Deleted all admins except JunYOu")
+
+
 def listAllAdmins(bot, update):
     adminList = ""
-
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin List')):
             adminInfo = rList.lindex('Admin List', i).decode('utf-8').split("|")
-            logger.info(": ".join(adminInfo[1:2]))
-            adminList += ": ".join(adminInfo[1:2]) + "\n"  # search, decode, split, slice, join, and concatenate
+            logger.info(": ".join(adminInfo[1:]))
+            adminList += ": ".join(adminInfo[1:]) + "\n"  # search, decode, split, slice, join, and concatenate
 
         if adminList != "":
             logger.info(adminList)
@@ -211,7 +217,7 @@ def listAllAdmins(bot, update):
 
 
 def removeAdmin(bot, update, args):
-    searchName = " ".join(args)  # if first name has space, put it together into one searchName
+    searchName = args[0]  # there should be no space in the first name
     removed = False
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin List')):
