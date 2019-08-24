@@ -22,27 +22,40 @@ You should find a bot named ___. Tap on the chat to enter.
 
 Only admins are capable of giving the bot admin commands, such as to download the feedback and attendance files.
 
-To become an admin, please contact the last known admin
+To become an admin, please contact the last known admin.
 
-### Break down into end to end tests
+### Customising the messages
 
-Explain what these tests test and why
+Refer beneath for the instructions on how to customise the messages for your event.
 
-```
-Give an example
-```
+## Commands
 
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+### Attendance and Feedback
+* Attendance stats: `/aStats`
+    * Gives you the total and currently registered number of participants.
+* Feedback stats: `/fStats`
+    * Gives you the current number of feedback responses.
+* Attendance file: `/aFile`
+    * Sends you the most updated Excel file for attendance.
+* Feedback file: `/fFile`
+    * Sends you the most updated Excel file for feedback.
+### Admin Editing Commands
+* Add new admin: `/newAdmin`
+    * Lets you add a new admin by sending their contact to the bot.
+* List all admins: `/listAdmins`
+    * Shows you all the current admins and their phone numbers.
+* Remove an admin: `/removeAdmin`
+    * Lets you remove an admin.
+### Admin Editing Commands
+* Change messages: `/changeText`
+    * Allows you to change the text of the messages. Just follow the prompts.
+    * You can do `/changeText <number>` to change the following directly:
+        * 1 - Start of attendance taking
+        * 2 - NRIC is not found in provided list
+        * 3 - End of attendance taking
+        * 4 - Start of feedback
+        * 5-7 - Feedback questions 1-3
+        * 8 - End of feedback
 
 ## Built With
 

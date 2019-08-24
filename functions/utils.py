@@ -183,7 +183,7 @@ def addNewAdmin(bot, update):
     userPhone = update.effective_message.contact.phone_number
 
     logger.info("New admin: " + str(userID) + " " + userName + " " + str(userPhone))
-    # admin list holds all admin ids + admin names + phone numbers
+    #  admin list holds all admin ids + admin names + phone numbers
     rList.lpush('Admin List', str(userID) + "|" + userName + "|" + str(userPhone))
 
     logger.info("New admin {} has been added.".format(userName))
@@ -229,6 +229,7 @@ def removeAdmin(bot, update, args):
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin List')):
             current = rList.lindex('Admin List', i).decode('utf-8')
+            logger.info(current)
             if searchName.lower() in current.lower():  # if the name is found
                 removed = current
                 if searchName != "JunYou":
