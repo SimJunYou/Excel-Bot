@@ -59,14 +59,14 @@ Shows you all the current admins and their phone numbers.
 Remove an admin - /removeAdmin
 Lets you remove an admin.
 '''
-    if update.message.from_user.id in getAdminID():
+    if update.message.from_user.id == getAdminID():
         update.message.reply_text(helpText)
     else:
         update.message.reply_text("You are not recognised!")
 
 
 def attendanceStats(bot, update):
-    if update.message.from_user.id in getAdminID():
+    if update.message.from_user.id == getAdminID():
         count = 0
         total = 0
         for each in PERSON:
@@ -80,7 +80,7 @@ def attendanceStats(bot, update):
 
 
 def feedbackStats(bot, update):
-    if update.message.from_user.id in getAdminID():
+    if update.message.from_user.id == getAdminID():
         update.message.reply_text("Good day, admin.\nTotal replies: {}".format(rList.llen('Feedback')))
         logger.info("Admin initiates stats report.\nTotal replies: {}".format(rList.llen('Feedback')))
     else:
@@ -98,7 +98,7 @@ def chatID(bot, update):
 
 
 def sendAttendanceFile(bot, update):
-    if update.message.from_user.id in getAdminID():
+    if update.message.from_user.id == getAdminID():
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest attendance")
         excel.createFile_sem()
@@ -108,7 +108,7 @@ def sendAttendanceFile(bot, update):
 
 
 def sendFeedbackFile(bot, update):
-    if update.message.from_user.id in getAdminID():
+    if update.message.from_user.id == getAdminID():
         update.message.reply_text("Good day, admin")
         logger.info("Admin requests latest feedback")
         excel.createFile_fb()
@@ -128,7 +128,7 @@ def startChangeChat(bot, update, user_data, args):
                     "1. Start of attendance taking\n2. Wrong NRIC message\n3. End of attendance taking\n"\
                     "4. Start of feedback\n5-7. Questions 1-3\n8. End of feedback"
 
-    if update.message.from_user.id in getAdminID():
+    if update.message.from_user.id == getAdminID():
         logger.info("Admin requests to change chat text")
         if not args:  # if arguments have not been passed, send update message and go to ADMIN_START
             update.message.reply_text(updateMessage, markup=admin_markup)
@@ -172,13 +172,13 @@ def startNewAdmin(bot, update):
     updateMessage = "Good day, admin. You have requested to add a new admin. " \
                     "Please send me his/her contact so that I can register them in the system."
 
-    # if update.message.from_user.id in getAdminID():
-    logger.info("Admin requests to add new admin")
-    update.message.reply_text(updateMessage)
-    return NEW_ADMIN
-    # else:
-    #     update.message.reply_text("You are not recognised!")
-    #     return ConversationHandler.END
+    if update.message.from_user.id == getAdminID():
+        logger.info("Admin requests to add new admin")
+        update.message.reply_text(updateMessage)
+        return NEW_ADMIN
+    else:
+        update.message.reply_text("You are not recognised!")
+        return ConversationHandler.END
 
 
 def addNewAdmin(bot, update):
@@ -198,18 +198,18 @@ def addNewAdmin(bot, update):
 
 def listAllAdmins(bot, update):
     adminList = ""
-    # if update.message.from_user.id in getAdminID():
-    for i in range(rList.llen('Admin Info')):
-        adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"
-    update.message.reply_text(adminList)
-    # else:
-    #     update.message.reply_text("You are not recognised!")
+    if update.message.from_user.id == getAdminID():
+        for i in range(rList.llen('Admin Info')):
+            adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"
+        update.message.reply_text(adminList)
+    else:
+        update.message.reply_text("You are not recognised!")
 
 
 def removeAdmin(bot, update, args):
     searchName = " ".join(args)
     removed = False
-    if update.message.from_user.id in getAdminID():
+    if update.message.from_user.id == getAdminID():
         for i in range(rList.llen('Admin Info')):
             current = rList.lindex('Admin Info', i)
             if searchName in current:
