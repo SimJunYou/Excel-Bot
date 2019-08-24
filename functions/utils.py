@@ -172,9 +172,6 @@ def startNewAdmin(bot, update):
     updateMessage = "Good day, admin. You have requested to add a new admin. " \
                     "Please send me his/her contact so that I can register them in the system."
 
-    logger.info(update.message.from_user.id)
-    logger.info(getAdminID())
-
     if update.message.from_user.id in getAdminID():
         logger.info("Admin requests to add new admin")
         update.message.reply_text(updateMessage)
@@ -185,13 +182,14 @@ def startNewAdmin(bot, update):
 
 
 def addNewAdmin(bot, update):
+    #  below is to read the info from the new admin contact sent by admin
     userID = update.effective_message.contact.user_id
     userName = update.effective_message.contact.first_name
     userPhone = update.effective_message.contact.phone_number
 
     logger.info("New admin: " + str(userID) + " " + userName + " " + str(userPhone))
-    rList.lpush('Admin List', userID)
-    rList.lpush('Admin Info', userName+": "+userPhone)
+    rList.lpush('Admin List', userID)  # admin list holds all admin user IDs
+    rList.lpush('Admin Info', userName+": "+userPhone)  # admin info holds all admin names + phone numbers
 
     logger.info("New admin {} has been added.".format(userName))
     update.message.reply_text("New admin {} has been added.".format(userName))
@@ -203,27 +201,30 @@ def listAllAdmins(bot, update):
     adminList = ""
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin Info')):
-            adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"
-        update.message.reply_text(adminList)
+            adminList += rList.lindex('Admin Info', i).decode('utf-8') + "\n"  # search, decode, and concatenate
+        update.message.reply_text(adminList)  # send the complete list
     else:
         update.message.reply_text("You are not recognised!")
 
 
 def removeAdmin(bot, update, args):
-    searchName = " ".join(args)
+    searchName = " ".join(args)  # if first name has space, put it together into one searchName
     removed = False
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin Info')):
             current = rList.lindex('Admin Info', i).decode('utf-8')
-            if searchName in current:
+            if searchName in current:  # if the name is found
                 removed = current
-                rList.lrem('Admin List', i)
-                rList.lrem('Admin Info', i)
+                rList.lrem('Admin List', 1, i)  # remove one object with same name, searching from head
+                rList.lrem('Admin Info', 1, i)  # same as above
             break
 
-    removedName, removedPhone = removed.split(": ")
-    logger.info("Admin {} (p/h: {}) has been removed.".format(removedName, removedPhone))
-    update.message.reply_text("Admin {} (p/h: {}) has been removed".format(removedName, removedPhone))
+    if not removed:
+        update.message.reply_text("Admin {} not found".format(searchName))
+    else:
+        removedName, removedPhone = removed.split(": ")
+        logger.info("Admin {} (p/h: {}) has been removed.".format(removedName, removedPhone))
+        update.message.reply_text("Admin {} (p/h: {}) has been removed".format(removedName, removedPhone))
 
 
 
