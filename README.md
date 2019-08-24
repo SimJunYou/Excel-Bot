@@ -4,37 +4,25 @@ Takes in user identification, returns assigned seating from an Excel file, and m
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will help you get the bot up and running for your event, with custom messages and feedback questions.
 
-### Prerequisites
+### Finding the bot
 
-What things you need to install the software and how to install them
+Open your Telegram app and press the Search button. On Android, it is the magnifying glass symbol on the top right. On Apple, it is the Search text field on the top of the main screen.
 
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+Type in the following into the search:
 
 ```
-Give the example
+wiipbot
 ```
 
-And repeat
+You should find a bot named ___. Tap on the chat to enter.
 
-```
-until finished
-```
+### Becoming an admin
 
-End with an example of getting some data out of the system or using it for a little demo
+Only admins are capable of giving the bot admin commands, such as to download the feedback and attendance files.
 
-## Running the tests
-
-Explain how to run the automated tests for this system
+To become an admin, please contact the last known admin
 
 ### Break down into end to end tests
 

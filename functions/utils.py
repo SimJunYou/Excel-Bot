@@ -145,16 +145,9 @@ def updateChatText(bot, update, user_data):
     return ConversationHandler.END
 
 
-def setAll(bot, update):
-    rList.mset({"TEXT1": "test1"})
-    rList.mset({"TEXT2": "test2"})
-    rList.mset({"TEXT3": "test3"})
-    rList.mset({"TEXT4": "test4"})
-    rList.mset({"TEXT5": "test5"})
-    rList.mset({"TEXT6": "test6"})
-    rList.mset({"TEXT7": "test7"})
-    rList.mset({"TEXT8": "test8"})
-    update.message.reply_text("All set.")
+def addNewAdmin(bot, update):
+    user = update.message.from_user
+    update.message.reply_text(user.id)
 
 
 

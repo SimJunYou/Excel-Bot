@@ -81,7 +81,7 @@ def main():
     dp.add_handler(CommandHandler('fStats', utils.feedbackStats))
     dp.add_handler(CommandHandler('aFile', utils.sendAttendanceFile))
     dp.add_handler(CommandHandler('fFile', utils.sendFeedbackFile))
-    dp.add_handler(CommandHandler('setAll', utils.setAll))
+    dp.add_handler(CommandHandler('newAdmin', utils.addNewAdmin()))
 
     # log all errors
     dp.add_error_handler(error)
