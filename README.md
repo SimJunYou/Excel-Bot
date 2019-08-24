@@ -20,7 +20,7 @@ You should find a bot named ___. Tap on the chat to enter.
 
 ### Becoming an admin
 
-Only admins are capable of giving the bot admin commands, such as to download the feedback and attendance files.
+Only admins are capable of giving the bot commands, such as to download the feedback and attendance files.
 
 To become an admin, please contact the last known admin.
 
@@ -29,8 +29,12 @@ To become an admin, please contact the last known admin.
 Refer beneath for the instructions on how to customise the messages for your event.
 
 ## Commands
-
-### Attendance and Feedback
+### Attendee's Commands
+* Begin attendance-taking: `/seminar`
+    * Runs through the attendance-taking for the event
+* Begin feedback-taking: `/postevent`
+    * Runs through the feedback-taking for the event
+### Attendance and Feedback (requires admin)
 * Attendance stats: `/aStats`
     * Gives you the total and currently registered number of participants.
 * Feedback stats: `/fStats`
@@ -39,14 +43,14 @@ Refer beneath for the instructions on how to customise the messages for your eve
     * Sends you the most updated Excel file for attendance.
 * Feedback file: `/fFile`
     * Sends you the most updated Excel file for feedback.
-### Admin Editing Commands
+### Admin Editing Commands (requires admin)
 * Add new admin: `/newAdmin`
     * Lets you add a new admin by sending their contact to the bot.
 * List all admins: `/listAdmins`
     * Shows you all the current admins and their phone numbers.
 * Remove an admin: `/removeAdmin`
     * Lets you remove an admin.
-### Admin Editing Commands
+### Message Editing Commands (requires admin)
 * Change messages: `/changeText`
     * Allows you to change the text of the messages. Just follow the prompts.
     * You can do `/changeText <number>` to change the following directly:
