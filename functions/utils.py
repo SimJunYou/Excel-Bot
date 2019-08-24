@@ -198,6 +198,7 @@ def listAllAdmins(bot, update):
     if update.message.from_user.id in getAdminID():
         for i in range(rList.llen('Admin List')):
             adminInfo = rList.lindex('Admin List', i).decode('utf-8').split("|")
+            logger.info(": ".join(adminInfo[1:2]))
             adminList += ": ".join(adminInfo[1:2]) + "\n"  # search, decode, split, slice, join, and concatenate
 
         if adminList != "":
