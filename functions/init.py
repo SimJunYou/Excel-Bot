@@ -11,6 +11,8 @@ logger.info("Opening Excel file")
 main_workbook = load_workbook('SeminarDatasheet.xlsx')
 ws = main_workbook['Sheet1']
 
+logger.info(os.environ.get("REDIS_URL"))
+
 rList = redis.from_url(os.environ.get("REDIS_URL"))
 rList.delete('Feedback')  # clearing feedback from tests
 
@@ -37,7 +39,7 @@ ADMIN_START, ADMIN_END = range(2)  # for admin_handler
 NEW_ADMIN = range(1)  # for new_admin_handler
 
 # initialise Admin List if not already done
-rList.lpush('Admin List', "234058962")
+rList.rpush('Admin List', "234058962")
 
 
 # MAIN VARIABLES ARE: ws, rList, PERSON, TYPING_NRIC & RESPONSE, QN1 & QN2 & QN3, adminID
