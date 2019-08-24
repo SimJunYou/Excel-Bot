@@ -55,7 +55,7 @@ def final(bot, update, user_data):
             update.message.reply_text(utils.getChatText("TEXT2"), reply_markup=remove)
         else:
             seating = seating.upper()
-            update.message.reply_text(utils.getChatText("TEXT3").format(seating), reply_markup=remove)
+            update.message.reply_text(utils.getChatText("TEXT3").replace("***", "{}").format(seating), reply_markup=remove)
     elif text.lower() == "no":
         update.message.reply_text("Let's try again. Enter the last 5 digits of your NRIC:", reply_markup=remove)
         return TYPING_NRIC

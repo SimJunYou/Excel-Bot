@@ -6,6 +6,7 @@ import logging
 from functions.init import PERSON, rList, adminID, ADMIN_START, ADMIN_END
 from functions import excel
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram.ext import ConversationHandler
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -14,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 admin_reply_keyboard = [['1', '2', '3', '4'], ['5', '6', '7', '8']]
 admin_markup = ReplyKeyboardMarkup(admin_reply_keyboard, one_time_keyboard=True)
+remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 #######################
 
@@ -119,7 +121,7 @@ def receiveChatToChange(bot, update, user_data):
     admin_state = "TEXT" + admin_state  # in rList, the key is TEXT1 for the 'Start of attendance taking' text
     user_data["ADMIN_STATE"] = admin_state
 
-    update.message.reply_text("The following is the current message:")
+    update.message.reply_text("The following is the current message:", reply_markup=remove)
     update.message.reply_text(rList.get(admin_state))
     if admin_state == "TEXT3":
         update.message.reply_text("Note: type *** where the group/seat number will go in the new message.")
@@ -131,12 +133,22 @@ def receiveChatToChange(bot, update, user_data):
 def updateChatText(bot, update, user_data):
     chatToChange = user_data["ADMIN_STATE"]
     newText = update.message.text
-
-    if chatToChange == "TEXT3":
-        newText = newText.replace("***", "{}")
-
     rList.mset({chatToChange: newText})
     update.message.reply_text("The update is complete.")
+
+    return ConversationHandler.END
+
+
+def setAll(bot, update):
+    rList.mset({"TEXT1": "test1"})
+    rList.mset({"TEXT2": "test2"})
+    rList.mset({"TEXT3": "test3"})
+    rList.mset({"TEXT4": "test4"})
+    rList.mset({"TEXT5": "test5"})
+    rList.mset({"TEXT6": "test6"})
+    rList.mset({"TEXT7": "test7"})
+    rList.mset({"TEXT8": "test8"})
+    update.message.reply_text("All set.")
 
 
 
