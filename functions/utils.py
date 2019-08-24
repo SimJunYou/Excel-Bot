@@ -220,6 +220,10 @@ def listAllAdmins(bot, update):
 
 
 def removeAdmin(bot, update, args):
+    if not args:
+        update.message.reply_text("Please provide a name. e.g. /removeAdmin John")
+        return
+
     searchName = args[0]  # there should be no space in the first name
     removed = False
     if update.message.from_user.id in getAdminID():
