@@ -4,7 +4,6 @@
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
-
 from functions.init import rList, QN2, QN3, ENDPOST
 from functions import utils
 import logging
@@ -21,12 +20,18 @@ remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 def postevent(bot, update):
     update.message.reply_text(utils.getChatText("TEXT4"),
-        parse_mode='Markdown')
+                              parse_mode='Markdown')
     update.message.reply_text(utils.getChatText("TEXT5"), parse_mode='Markdown')
 
     logger.info("User %s initiates contact", update.message.from_user.first_name)
 
     return QN2
+
+
+# def feedbackQuestion(bot, update, user_data):
+#     text = update.message.text
+#     user_data['FeedbackAnswers'].append(text)
+#     update.message.reply_text(utils.getChatText("TEXT6"), parse_mode='Markdown')
 
 
 def question2(bot, update, user_data):
@@ -48,8 +53,8 @@ def question3(bot, update, user_data):
 def endPost(bot, update, user_data):
     text = update.message.text
     user_data['Question3'] = text
-    update.message.reply_text(utils.getChatText("TEXT8"), parse_mode='Markdown')
-    userFeedback = user_data['Question1']+'||||'+user_data['Question2']+'||||'+user_data['Question3']
+    update.message.reply_text(utils.getChatText("TEXT5"), parse_mode='Markdown')
+    userFeedback = user_data['Question1'] + '||||' + user_data['Question2'] + '||||' + user_data['Question3']
     rList.rpush('Feedback', userFeedback)
 
     logger.info("User {} completes".format(update.message.from_user.first_name))

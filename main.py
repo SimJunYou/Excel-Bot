@@ -6,8 +6,9 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 
 import logging
 
-from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST, ADMIN_START, ADMIN_END, NEW_ADMIN
-from functions import seminar, post_seminar, utils
+from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST
+from functions.init import ADMIN_TXT_START, ADMIN_FB_START, ADMIN_END, NEW_ADMIN
+from functions import seminar, post_seminar, utils, admin, message
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -59,14 +60,30 @@ def main():
     )
 
     # Add conversation handler with the states ADMIN_START, ADMIN_END
-    admin_handler = ConversationHandler(
-        entry_points=[CommandHandler('changeText', utils.startChangeChat, pass_user_data=True, pass_args=True)],
+    admin_txt_handler = ConversationHandler(
+        entry_points=[CommandHandler('changeText', message.startChangeChat,
+                                     pass_user_data=True, pass_args=True)],
         states={
-            ADMIN_START: [MessageHandler(Filters.text,
-                                         utils.receiveChatToChange,
-                                         pass_user_data=True)],
+            ADMIN_TXT_START: [MessageHandler(Filters.text,
+                                             message.receiveChatToChange,
+                                             pass_user_data=True)],
             ADMIN_END: [MessageHandler(Filters.text,
-                                       utils.updateChatText,
+                                       message.updateChatText,
+                                       pass_user_data=True)]
+        },
+        fallbacks=[]
+    )
+
+    # Add conversation handler with the states ADMIN_START, ADMIN_END
+    admin_fb_handler = ConversationHandler(
+        entry_points=[CommandHandler('changeFeedback', message.startChangeFeedback,
+                                     pass_user_data=True, pass_args=True)],
+        states={
+            ADMIN_FB_START: [MessageHandler(Filters.text,
+                                            message.receiveFeedbackToChange,
+                                            pass_user_data=True)],
+            ADMIN_END: [MessageHandler(Filters.text,
+                                       message.updateChatText,
                                        pass_user_data=True)]
         },
         fallbacks=[]
@@ -74,26 +91,32 @@ def main():
 
     # Add conversation handler with the state NEW_ADMIN_END
     admin_handler = ConversationHandler(
-        entry_points=[CommandHandler('newAdmin', utils.startNewAdmin)],
+        entry_points=[CommandHandler('newAdmin', admin.startNewAdmin)],
         states={
             NEW_ADMIN: [MessageHandler(Filters.contact,
-                                       utils.addNewAdmin)]
+                                       admin.addNewAdmin)]
         },
         fallbacks=[]
     )
 
     dp.add_handler(conv_handler)
     dp.add_handler(post_conv_handler)
+    dp.add_handler(admin_txt_handler)
+    dp.add_handler(admin_fb_handler)
     dp.add_handler(admin_handler)
+
     dp.add_handler(CommandHandler('help', utils.adminHelp))
     dp.add_handler(CommandHandler('id', utils.chatID))
+
     dp.add_handler(CommandHandler('aStats', utils.attendanceStats))
     dp.add_handler(CommandHandler('fStats', utils.feedbackStats))
+
     dp.add_handler(CommandHandler('aFile', utils.sendAttendanceFile))
     dp.add_handler(CommandHandler('fFile', utils.sendFeedbackFile))
-    dp.add_handler(CommandHandler('listAdmins', utils.listAllAdmins))
-    dp.add_handler(CommandHandler('deleteAll', utils.deleteAllAdmins))
-    dp.add_handler(CommandHandler('removeAdmin', utils.removeAdmin, pass_args=True))
+
+    dp.add_handler(CommandHandler('listAdmins', admin.listAllAdmins))
+    dp.add_handler(CommandHandler('deleteAll', admin.deleteAllAdmins))
+    dp.add_handler(CommandHandler('removeAdmin', admin.removeAdmin, pass_args=True))
 
     # log all errors
     dp.add_error_handler(error)

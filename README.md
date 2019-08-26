@@ -58,8 +58,9 @@ Refer beneath for the instructions on how to customise the messages for your eve
         * 2 - NRIC is not found in provided list
         * 3 - End of attendance taking
         * 4 - Start of feedback
-        * 5-7 - Feedback questions 1-3
-        * 8 - End of feedback
+        * 5 - End of feedback
+* Change feedback questions: `/changeFeedback`
+    * Allows you to change the feedback questions. Just follow the prompts.
 
 ## Built With
 
