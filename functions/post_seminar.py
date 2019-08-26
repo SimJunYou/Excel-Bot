@@ -33,7 +33,7 @@ def postevent(bot, update):
 #     user_data['FeedbackAnswers'].append(text)
 #     update.message.reply_text(utils.getChatText("TEXT6"), parse_mode='Markdown')
 
-
+# TODO: Overhaul this whole question sending system
 def question2(bot, update, user_data):
     text = update.message.text
     user_data['Question1'] = text

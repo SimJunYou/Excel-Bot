@@ -35,6 +35,18 @@ def getAdminID():
     return adminList
 
 
+def getFeedbackQuestions():
+    questionsList = {}
+    for i in range(rList.llen('Feedback Questions')):
+        question = rList.lindex('Feedback Questions', i).decode('utf-8')
+        questionID = "QN"+str(i+1)
+        questionsList[questionID] = question
+
+    if questionsList == {}:
+        return False
+    return questionsList
+
+
 def adminHelp(bot, update):
     helpText = '''AVAILABLE COMMANDS:
     
@@ -111,8 +123,8 @@ def sendFeedbackFile(bot, update):
         update.message.reply_text("You are not recognised!")
 
 
-def getChatText(promptID):
-    chatText = rList.get(promptID)
+def getChatText(message):
+    chatText = rList.get(message)
     return chatText
 
 

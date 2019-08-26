@@ -7,7 +7,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 import logging
 
 from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST
-from functions.init import ADMIN_TXT_START, ADMIN_FB_START, ADMIN_END, NEW_ADMIN
+from functions.init import ADMIN_TXT_START, ADMIN_FB_START, ADMIN_END, NEW_ADMIN, ADMIN_RM_END
 from functions import seminar, post_seminar, utils, admin, message
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -82,6 +82,9 @@ def main():
             ADMIN_FB_START: [MessageHandler(Filters.text,
                                             message.receiveFeedbackToChange,
                                             pass_user_data=True)],
+            ADMIN_RM_END: [MessageHandler(Filters.text,
+                                          message.removeQuestion,
+                                          pass_user_data=True)],
             ADMIN_END: [MessageHandler(Filters.text,
                                        message.updateChatText,
                                        pass_user_data=True)]
