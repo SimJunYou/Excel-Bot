@@ -41,7 +41,7 @@ def getFeedbackQuestions():
         question = rList.lindex('Feedback Questions', i).decode('utf-8')
         questionID = "QN"+str(i+1)
         questionsList[questionID] = question
-
+        logger.info('Question ID: {}, Question: {}'.format(questionID, question))
     if questionsList == {}:
         return False
     return questionsList
@@ -131,7 +131,7 @@ def getChatText(message):
 def getQuestions():
     questionList = []
     for index in range(rList.llen('Feedback Questions')):
-        questionList.append(rList.lindex('Feedback Questions'))
+        questionList.append(rList.lindex('Feedback Questions', index).decode('utf-8'))
     return questionList
 
 

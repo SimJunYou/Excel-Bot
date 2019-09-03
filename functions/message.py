@@ -78,7 +78,7 @@ def startChangeFeedback(bot, update, user_data, args):
 
     questionsMessage = ""
     for i in range(len(feedbackQuestions)):
-        questionsMessage += "{}. Question {}\n".format(i, i)
+        questionsMessage += "{}. Question {}\n".format(i+1, i+1)
 
     updateMessage = "Good day, admin. You have requested to change the feedback questions. " \
                     "Which one of the following feedback questions do you want to change?\n" \
@@ -116,6 +116,7 @@ def receiveFeedbackToChange(bot, update, user_data, admin_state='0'):
             admin_state = "QN1"
             # in rList, the key is QN1 for the first feedback question
         else:
+            logger.info(feedbackQuestions)
             admin_state = "QN" + len(feedbackQuestions)
             # subsequent keys are QNn for the nth question
         user_data["ADMIN_STATE"] = admin_state
