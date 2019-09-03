@@ -66,8 +66,15 @@ def receiveChatToChange(bot, update, user_data, admin_state='0'):
 def startChangeFeedback(bot, update, user_data, args):
     feedbackQuestions = utils.getFeedbackQuestions()
     if not feedbackQuestions:
-        update.message.reply_text("There are no feedback questions to change.")
-        return ConversationHandler.END
+        if update.message.from_user.id in utils.getAdminID():
+            if not args:
+                update.message.reply_text("There are no feedback questions to change. Please type 0 to add a question.")
+                return ADMIN_FB_START
+            else:
+                receiveChatToChange(bot, update, user_data, args[0])
+        else:
+            update.message.reply_text("You are not recognised!")
+            return ConversationHandler.END
 
     questionsMessage = ""
     for i in range(len(feedbackQuestions)):
