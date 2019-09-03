@@ -124,7 +124,7 @@ def sendFeedbackFile(bot, update):
 
 
 def getChatText(message):
-    chatText = rList.get(message)
+    chatText = rList.get(message).decode('utf-8')
     return chatText
 
 

@@ -19,9 +19,7 @@ remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 
 def postevent(bot, update, user_data):
-    update.message.reply_text(utils.getChatText("TEXT4"),
-                              parse_mode='Markdown')
-
+    update.message.reply_text(utils.getChatText("TEXT4"), parse_mode='Markdown')
     logger.info("User %s initiates contact", update.message.from_user.first_name)
     user_data['Question'] = utils.getQuestions()  # retrieve list of feedback questions
     user_data['Answer'] = '0'  # first answer flag

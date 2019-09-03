@@ -144,6 +144,7 @@ def updateChatText(bot, update, user_data):
 
     if "QN" in chatToChange:  # if its a feedback question,
         rList.rpush("Feedback Questions", newText)  # rpush because new questions should go to end of list for order
+        update.message.reply_text("The question update is complete.")
     else:  # otherwise, it is a message
         rList.mset({chatToChange: newText})  # just use mset with the ID
         update.message.reply_text("The update is complete.")
