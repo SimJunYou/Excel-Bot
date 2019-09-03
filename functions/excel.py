@@ -59,13 +59,19 @@ def createFile_fb():
 
     main_workbook = Workbook()
     worksheet = main_workbook.active
-    row_number = 1
+    rowNumber = 1
     cell1, cell2, cell3 = 'A' + str(row_number), 'B' + str(row_number), 'C' + str(row_number)
+    feedbackArray = []
 
     for index in range(0, rList.llen('Feedback')):
-        worksheet[cell1], worksheet[cell2], worksheet[cell3] = rList.lindex('Feedback', index-1).decode('utf-8').split('||||')
-        row_number += 1
-        cell1, cell2, cell3 = 'A' + str(row_number), 'B' + str(row_number), 'C' + str(row_number)
+        feedbackArray = [rList.lindex('Feedback', index-1).decode('utf-8').split('||||')]
+        rowNumber += 1
+        cellList = []
+        for columnNum in range(len(feedbackArray)):
+            columnLetter = chr(columnNum + 65)
+            cellList.append(columnLetter + str(rowNumber))
+        for cellIndex in range(len(cellList)):
+            worksheet[cellList[cellIndex]] = feedbackArray[cellIndex]
 
     logger.info('Updating complete, saving excel file')
     main_workbook.save('Feedback.xlsx')

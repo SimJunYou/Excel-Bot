@@ -6,7 +6,7 @@ from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters, Rege
 
 import logging
 
-from functions.init import TYPING_NRIC, ENDSEM, QN2, QN3, ENDPOST
+from functions.init import TYPING_NRIC, ENDSEM, QUESTION, ENDPOST
 from functions.init import ADMIN_TXT_START, ADMIN_FB_START, ADMIN_END, NEW_ADMIN, ADMIN_RM_END
 from functions import seminar, post_seminar, utils, admin, message
 
@@ -44,14 +44,11 @@ def main():
 
     # Add conversation handler with the states QN1, QN2, QN3
     post_conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('postevent', post_seminar.postevent)],
+        entry_points=[CommandHandler('postevent', post_seminar.postevent, pass_user_data=True)],
         states={
-            QN2: [MessageHandler(Filters.text,
-                                 post_seminar.question2,
-                                 pass_user_data=True)],
-            QN3: [MessageHandler(Filters.text,
-                                 post_seminar.question3,
-                                 pass_user_data=True)],
+            QUESTION: [MessageHandler(Filters.text,
+                                      post_seminar.question,
+                                      pass_user_data=True)],
             ENDPOST: [MessageHandler(Filters.text,
                                      post_seminar.endPost,
                                      pass_user_data=True)]

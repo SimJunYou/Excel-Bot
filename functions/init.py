@@ -36,7 +36,7 @@ while ws['A' + str(row_number)].value is not None:
 
 
 TYPING_NRIC, ENDSEM = range(2)  # for conv_handler
-QN2, QN3, ENDPOST = range(3)  # for post_conv_handler
+QUESTION, ENDPOST = range(2)  # for post_conv_handler
 ADMIN_TXT_START, ADMIN_FB_START, ADMIN_END, ADMIN_RM_END = range(4)  # for admin_txt_handler and admin_fb_handler
 NEW_ADMIN = range(1)  # for new_admin_handler
 

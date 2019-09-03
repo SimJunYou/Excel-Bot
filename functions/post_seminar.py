@@ -4,7 +4,7 @@
 from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import ConversationHandler
 
-from functions.init import rList, QN2, QN3, ENDPOST
+from functions.init import rList, QUESTION, ENDPOST
 from functions import utils
 import logging
 
@@ -18,44 +18,38 @@ markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 remove = ReplyKeyboardRemove(remove_keyboard=True)
 
 
-def postevent(bot, update):
+def postevent(bot, update, user_data):
     update.message.reply_text(utils.getChatText("TEXT4"),
                               parse_mode='Markdown')
-    update.message.reply_text(utils.getChatText("TEXT5"), parse_mode='Markdown')
 
     logger.info("User %s initiates contact", update.message.from_user.first_name)
+    user_data['Question'] = utils.getQuestions()  # retrieve list of feedback questions
+    user_data['Answer'] = '0'  # first answer flag
+    update.message.reply_text(user_data['Question'][0], parse_mode='Markdown')
 
-    return QN2
+    return QUESTION
 
 
-# def feedbackQuestion(bot, update, user_data):
-#     text = update.message.text
-#     user_data['FeedbackAnswers'].append(text)
-#     update.message.reply_text(utils.getChatText("TEXT6"), parse_mode='Markdown')
-
-# TODO: Overhaul this whole question sending system
-def question2(bot, update, user_data):
+def question(bot, update, user_data):
     text = update.message.text
-    user_data['Question1'] = text
-    update.message.reply_text(utils.getChatText("TEXT6"), parse_mode='Markdown')
+    if not user_data['Question']:  # if question_list is empty
+        user_data['Answer'] += "|||" + text  # put separator with the feedback answer
+        return ENDPOST
+    elif user_data['Answer'] != '0':  # if it is not the first question in the list
+        user_data['Answer'] += "|||" + text  # put separator with the feedback answer
+    else:  # if it is the first question in the list
+        user_data['Answer'] = text  # don't need separator with the feedback answer
 
-    return QN3
-
-
-def question3(bot, update, user_data):
-    text = update.message.text
-    user_data['Question2'] = text
-    update.message.reply_text(utils.getChatText("TEXT7"), parse_mode='Markdown')
-
-    return ENDPOST
+    user_data['Question'] = user_data['Question'][1:]  # remove the first question, since it's been asked
+    update.message.reply_text(user_data['Question'][0], parse_mode='Markdown')
+    return QUESTION
 
 
 def endPost(bot, update, user_data):
     text = update.message.text
     user_data['Question3'] = text
     update.message.reply_text(utils.getChatText("TEXT5"), parse_mode='Markdown')
-    userFeedback = user_data['Question1'] + '||||' + user_data['Question2'] + '||||' + user_data['Question3']
-    rList.rpush('Feedback', userFeedback)
+    rList.rpush('Feedback', user_data['Answer'])
 
     logger.info("User {} completes".format(update.message.from_user.first_name))
     user_data.clear()

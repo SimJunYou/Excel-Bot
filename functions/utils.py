@@ -128,4 +128,10 @@ def getChatText(message):
     return chatText
 
 
+def getQuestions():
+    questionList = []
+    for index in range(rList.llen('Feedback Questions')):
+        questionList.append(rList.lindex('Feedback Questions'))
+    return questionList
+
 

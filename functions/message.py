@@ -76,7 +76,7 @@ def startChangeFeedback(bot, update, user_data, args):
     updateMessage = "Good day, admin. You have requested to change the feedback questions. " \
                     "Which one of the following feedback questions do you want to change?\n" \
                     "To add question, type 0. To remove question, type -(question number).\n" \
-                    "For example, to remove question 2, type -2.\n\n" \
+                    "For example, to remove question 2, type -2.\n\n"
     updateMessage += questionsMessage
 
     if update.message.from_user.id in utils.getAdminID():
