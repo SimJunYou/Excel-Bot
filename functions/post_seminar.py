@@ -30,15 +30,14 @@ def postevent(bot, update, user_data):
 
 def question(bot, update, user_data):
     text = update.message.text
-    if not user_data['Question']:  # if question_list is empty
-        user_data['Answer'] += "|||" + text  # put separator with the feedback answer
-        return ENDPOST
-    elif user_data['Answer'] != '0':  # if it is not the first question in the list
+    if user_data['Answer'] != '0':  # if it is not the first question in the list
         user_data['Answer'] += "|||" + text  # put separator with the feedback answer
     else:  # if it is the first question in the list
         user_data['Answer'] = text  # don't need separator with the feedback answer
 
     user_data['Question'] = user_data['Question'][1:]  # remove the first question, since it's been asked
+    if not user_data['Question']:
+        return ENDPOST
     update.message.reply_text(user_data['Question'][0], parse_mode='Markdown')
     return QUESTION
 
