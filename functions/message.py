@@ -112,7 +112,12 @@ def receiveFeedbackToChange(bot, update, user_data, admin_state='0'):
         return ADMIN_RM_END
 
     elif admin_state == '0':
-        admin_state = "QN" + len(feedbackQuestions)  # in rList, the key is QN1 for the first feedback question
+        if not feedbackQuestions:
+            admin_state = "QN1"
+            # in rList, the key is QN1 for the first feedback question
+        else:
+            admin_state = "QN" + len(feedbackQuestions)
+            # subsequent keys are QNn for the nth question
         user_data["ADMIN_STATE"] = admin_state
         update.message.reply_text("Please type your new question:")
         return ADMIN_END
