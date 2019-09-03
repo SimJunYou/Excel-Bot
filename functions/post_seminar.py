@@ -44,7 +44,7 @@ def question(bot, update, user_data):
 
 def endPost(bot, update, user_data):
     text = update.message.text
-    user_data['Question3'] = text
+    user_data['Answer'] += "|||" + text
     update.message.reply_text(utils.getChatText("TEXT5"), parse_mode='Markdown')
     rList.rpush('Feedback', user_data['Answer'])
 

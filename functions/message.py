@@ -36,6 +36,7 @@ def startChangeChat(bot, update, user_data, args):
             return ADMIN_TXT_START
         else:
             # if arguments have been passed, pass arguments into receiveChatToChange
+            logger.info("Admin requests to change chat text number {}".format(args[0]))
             return receiveChatToChange(bot, update, user_data, args[0])  # go straight to ADMIN_END or back to start
     else:
         update.message.reply_text("You are not recognised!")
@@ -43,6 +44,7 @@ def startChangeChat(bot, update, user_data, args):
 
 
 def receiveChatToChange(bot, update, user_data, admin_state='0'):
+    admin_state = update.message.text
     if admin_state not in ['1', '2', '3', '4', '5']:
         update.message.reply_text("Invalid number. Please try again.")
         return ADMIN_TXT_START  # go from start again to re-enter number
@@ -68,9 +70,11 @@ def startChangeFeedback(bot, update, user_data, args):
     if not feedbackQuestions:
         if update.message.from_user.id in utils.getAdminID():
             if not args:
+                logger.info("Admin requests to change question")
                 update.message.reply_text("There are no feedback questions to change. Please type 0 to add a question.")
                 return ADMIN_FB_START
             else:
+                logger.info("Admin requests to change chat text number {}".format(args[0]))
                 receiveChatToChange(bot, update, user_data, args[0])
         else:
             update.message.reply_text("You are not recognised!")
@@ -102,7 +106,7 @@ def startChangeFeedback(bot, update, user_data, args):
 
 def receiveFeedbackToChange(bot, update, user_data, admin_state='0'):
     feedbackQuestions = utils.getFeedbackQuestions()
-
+    admin_state = update.message.text
     if admin_state[0] == '-' and admin_state[1:].isdigit() and '0' < admin_state[1:] < str(len(feedbackQuestions)):
         admin_state = "QN" + admin_state  # in rList, the key is QN1 for the first feedback question
         user_data["ADMIN_STATE"] = admin_state
