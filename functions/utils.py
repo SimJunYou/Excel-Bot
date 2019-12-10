@@ -25,7 +25,6 @@ def validate_nric(nric):
             return True
     return False
 
-# hi this is git
 
 def getAdminID():
     adminList = []
@@ -35,7 +34,6 @@ def getAdminID():
         adminList.append(int(adminID))
     return adminList
 
-# another one
 
 def getFeedbackQuestions():
     questionsList = {}
