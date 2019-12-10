@@ -25,6 +25,7 @@ def validate_nric(nric):
             return True
     return False
 
+# hi this is git
 
 def getAdminID():
     adminList = []
